@@ -1,185 +1,206 @@
 package com.miskevich.datastructures;
 
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
+import java.util.LinkedList;
 
 import static org.testng.Assert.assertEquals;
 
 public class AnyListTest {
 
-    private List<String> emptyArrList;
-    private List<String> listArrWithData;
+//    private List<String> emptyArrList;
+//    private List<String> listArrWithData;
+//
+//    @BeforeMethod
+//    public void initializeTestData(){
+//        emptyArrList = new ArrayList<String>();
+//        listArrWithData = new ArrayList<String>(){{add("str1"); add("str2"); add("str3");}};
+//    }
 
-    @BeforeMethod
-    public void initializeTestData(){
-        emptyArrList = new ArrayList<String>();
-        listArrWithData = new ArrayList<String>(){{add("str1"); add("str2"); add("str3");}};
+    @DataProvider(name = "provideLists")
+    public Object[][] provideData() {
+        java.util.List<String> listArrWithDataD = new java.util.ArrayList<String>(){{add("str1"); add("str2"); add("str3");}};
+        java.util.List<String> listLinkWithDataD = new LinkedList<String>(){{add("str1"); add("str2"); add("str3");}};
+
+        return new Object[][] {
+                { listArrWithDataD },
+                { listLinkWithDataD }
+        };
     }
 
 
-    @Test
-    public void testAdd(){
-        emptyArrList.add("one");
-        assertEquals(emptyArrList.get(0), "one");
-        assertEquals(emptyArrList.size(), 1);
-        listArrWithData.add("str4");
-        assertEquals(listArrWithData.get(0), "str1");
-        assertEquals(listArrWithData.get(1), "str2");
-        assertEquals(listArrWithData.get(2), "str3");
-        assertEquals(listArrWithData.get(3), "str4");
-        assertEquals(listArrWithData.size(), 4);
+    @Test(dataProvider = "provideLists")
+    public void testAddIntoEmptyList(java.util.List<String> arrWithData){
+        arrWithData.clear();
+        assertEquals(arrWithData.size(), 0);
+
+        arrWithData.add("one");
+        assertEquals(arrWithData.get(0), "one");
+        assertEquals(arrWithData.size(), 1);
     }
 
-    @Test
-    public void testAddEnsureCapacity(){
-        listArrWithData.add("str4");
-        listArrWithData.add("str5");
-        listArrWithData.add("str6");
-        assertEquals(listArrWithData.get(5), "str6");
-        assertEquals(listArrWithData.size(), 6);
+    @Test(dataProvider = "provideLists")
+    public void testAddIntoNotEmptyList(java.util.List<String> arrWithData){
+        arrWithData.add("str4");
+        assertEquals(arrWithData.get(0), "str1");
+        assertEquals(arrWithData.get(1), "str2");
+        assertEquals(arrWithData.get(2), "str3");
+        assertEquals(arrWithData.get(3), "str4");
+        assertEquals(arrWithData.size(), 4);
+    }
+
+    @Test(dataProvider = "provideLists")
+    public void testAddEnsureCapacity(java.util.List<String> arrWithData){
+        arrWithData.add("str4");
+        arrWithData.add("str5");
+        arrWithData.add("str6");
+        assertEquals(arrWithData.get(5), "str6");
+        assertEquals(arrWithData.size(), 6);
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class, expectedExceptionsMessageRegExp = "Incorrect index -> 4, " +
-            "index should be between 0 and 3")
-    public void testAddIndexInvalidIndex(){
-        listArrWithData.add(4, "str5");
+            "index should be between 0 and 3", dataProvider = "provideLists")
+    public void testAddIndexInvalidIndex(java.util.List<String> arrWithData){
+        arrWithData.add(4, "str5");
     }
 
-    @Test
-    public void testAddIndexBegin(){
-        listArrWithData.add(0, "begin");
-        assertEquals(listArrWithData.get(0), "begin");
-        assertEquals(listArrWithData.get(1), "str1");
-        assertEquals(listArrWithData.get(2), "str2");
-        assertEquals(listArrWithData.get(3), "str3");
-        assertEquals(listArrWithData.size(), 4);
+    @Test(dataProvider = "provideLists")
+    public void testAddIndexBegin(java.util.List<String> arrWithData){
+        arrWithData.add(0, "begin");
+        assertEquals(arrWithData.get(0), "begin");
+        assertEquals(arrWithData.get(1), "str1");
+        assertEquals(arrWithData.get(2), "str2");
+        assertEquals(arrWithData.get(3), "str3");
+        assertEquals(arrWithData.size(), 4);
     }
 
-    @Test
-    public void testAddIndexCenter(){
-        listArrWithData.add(1, "center");
-        assertEquals(listArrWithData.get(0), "str1");
-        assertEquals(listArrWithData.get(1), "center");
-        assertEquals(listArrWithData.get(2), "str2");
-        assertEquals(listArrWithData.get(3), "str3");
-        assertEquals(listArrWithData.size(), 4);
+    @Test(dataProvider = "provideLists")
+    public void testAddIndexCenter(java.util.List<String> arrWithData){
+        arrWithData.add(1, "center");
+        assertEquals(arrWithData.get(0), "str1");
+        assertEquals(arrWithData.get(1), "center");
+        assertEquals(arrWithData.get(2), "str2");
+        assertEquals(arrWithData.get(3), "str3");
+        assertEquals(arrWithData.size(), 4);
     }
 
-    @Test
-    public void testAddIndexEnd(){
-        listArrWithData.add(3, "end");
-        assertEquals(listArrWithData.get(0), "str1");
-        assertEquals(listArrWithData.get(1), "str2");
-        assertEquals(listArrWithData.get(2), "str3");
-        assertEquals(listArrWithData.get(3), "end");
-        assertEquals(listArrWithData.size(), 4);
+    @Test(dataProvider = "provideLists")
+    public void testAddIndexEnd(java.util.List<String> arrWithData){
+        arrWithData.add(3, "end");
+        assertEquals(arrWithData.get(0), "str1");
+        assertEquals(arrWithData.get(1), "str2");
+        assertEquals(arrWithData.get(2), "str3");
+        assertEquals(arrWithData.get(3), "end");
+        assertEquals(arrWithData.size(), 4);
     }
 
-    @Test
-    public void testIndexOfNull(){
-        listArrWithData.add(null);
-        listArrWithData.add("str5");
-        int actual = listArrWithData.indexOf(null);
+    @Test(dataProvider = "provideLists")
+    public void testIndexOfNull(java.util.List<String> arrWithData){
+        arrWithData.add(null);
+        arrWithData.add("str5");
+        int actual = arrWithData.indexOf(null);
         assertEquals(actual, 3);
     }
 
-    @Test
-    public void testIndexOf(){
-        int actual = listArrWithData.indexOf("str2");
+    @Test(dataProvider = "provideLists")
+    public void testIndexOf(java.util.List<String> arrWithData){
+        int actual = arrWithData.indexOf("str2");
         assertEquals(actual, 1);
     }
 
-    @Test
-    public void testIndexOfDoesNotExist(){
-        int actual = listArrWithData.indexOf("str50");
+    @Test(dataProvider = "provideLists")
+    public void testIndexOfDoesNotExist(java.util.List<String> arrWithData){
+        int actual = arrWithData.indexOf("str50");
         assertEquals(actual, -1);
     }
 
-    @Test
-    public void testLastIndexOfNull(){
-        listArrWithData.add(null);
-        listArrWithData.add(null);
-        int actual = listArrWithData.lastIndexOf(null);
+    @Test(dataProvider = "provideLists")
+    public void testLastIndexOfNull(java.util.List<String> arrWithData){
+        arrWithData.add(null);
+        arrWithData.add(null);
+        int actual = arrWithData.lastIndexOf(null);
         assertEquals(actual, 4);
     }
 
-    @Test
-    public void testLastIndexOf(){
-        listArrWithData.add(2, "str2");
-        int actual = listArrWithData.lastIndexOf("str2");
+    @Test(dataProvider = "provideLists")
+    public void testLastIndexOf(java.util.List<String> arrWithData){
+        arrWithData.add(2, "str2");
+        int actual = arrWithData.lastIndexOf("str2");
         assertEquals(actual, 2);
     }
 
-    @Test
-    public void testLastIndexOfDoesNotExist(){
-        int actual = listArrWithData.lastIndexOf("str50");
+    @Test(dataProvider = "provideLists")
+    public void testLastIndexOfDoesNotExist(java.util.List<String> arrWithData){
+        int actual = arrWithData.lastIndexOf("str50");
         assertEquals(actual, -1);
     }
 
-    @Test
-    public void testContainsTrue(){
-        boolean actual = listArrWithData.contains("str3");
+    @Test(dataProvider = "provideLists")
+    public void testContainsTrue(java.util.List<String> arrWithData){
+        boolean actual = arrWithData.contains("str3");
         assertEquals(actual, true);
     }
 
-    @Test
-    public void testContainsFalse(){
-        boolean actual = listArrWithData.contains("str50");
+    @Test(dataProvider = "provideLists")
+    public void testContainsFalse(java.util.List<String> arrWithData){
+        boolean actual = arrWithData.contains("str50");
         assertEquals(actual, false);
     }
 
-    @Test
-    public void testClear(){
-        listArrWithData.clear();
-        assertEquals(listArrWithData.size(), 0);
+    @Test(dataProvider = "provideLists")
+    public void testClear(java.util.List<String> arrWithData){
+        arrWithData.clear();
+        assertEquals(arrWithData.size(), 0);
     }
 
-    @Test
-    public void testGetBegin(){
-        String actual = listArrWithData.get(0);
+    @Test(dataProvider = "provideLists")
+    public void testGetBegin(java.util.List<String> arrWithData){
+        String actual = arrWithData.get(0);
         assertEquals(actual, "str1");
     }
 
-    @Test
-    public void testGetCenter(){
-        String actual = listArrWithData.get(1);
+    @Test(dataProvider = "provideLists")
+    public void testGetCenter(java.util.List<String> arrWithData){
+        String actual = arrWithData.get(1);
         assertEquals(actual, "str2");
     }
 
-    @Test
-    public void testGetEnd(){
-        String actual = listArrWithData.get(2);
+    @Test(dataProvider = "provideLists")
+    public void testGetEnd(java.util.List<String> arrWithData){
+        String actual = arrWithData.get(2);
         assertEquals(actual, "str3");
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class, expectedExceptionsMessageRegExp = "Incorrect index -> 50, " +
-            "index should be between 0 and 3")
-    public void testGetInvalidIndex(){
-        listArrWithData.get(50);
+            "index should be between 0 and 3", dataProvider = "provideLists")
+    public void testGetInvalidIndex(java.util.List<String> arrWithData){
+        arrWithData.get(50);
     }
 
-    @Test
-    public void testRemoveBegin(){
-        listArrWithData.remove(0);
-        assertEquals(listArrWithData.get(0), "str2");
-        assertEquals(listArrWithData.get(1), "str3");
-        assertEquals(listArrWithData.size(), 2);
+    @Test(dataProvider = "provideLists")
+    public void testRemoveBegin(java.util.List<String> arrWithData){
+        arrWithData.remove(0);
+        assertEquals(arrWithData.get(0), "str2");
+        assertEquals(arrWithData.get(1), "str3");
+        assertEquals(arrWithData.size(), 2);
     }
 
-    @Test
-    public void testRemoveCenter(){
-        listArrWithData.remove(1);
-        assertEquals(listArrWithData.get(0), "str1");
-        assertEquals(listArrWithData.get(1), "str3");
-        assertEquals(listArrWithData.size(), 2);
+    @Test(dataProvider = "provideLists")
+    public void testRemoveCenter(java.util.List<String> arrWithData){
+        arrWithData.remove(1);
+        assertEquals(arrWithData.get(0), "str1");
+        assertEquals(arrWithData.get(1), "str3");
+        assertEquals(arrWithData.size(), 2);
     }
 
-    @Test
-    public void testRemoveEnd(){
-        listArrWithData.remove(2);
-        assertEquals(listArrWithData.get(0), "str1");
-        assertEquals(listArrWithData.get(1), "str2");
-        assertEquals(listArrWithData.size(), 2);
+    @Test(dataProvider = "provideLists")
+    public void testRemoveEnd(java.util.List<String> arrWithData){
+        arrWithData.remove(2);
+        assertEquals(arrWithData.get(0), "str1");
+        assertEquals(arrWithData.get(1), "str2");
+        assertEquals(arrWithData.size(), 2);
     }
 
 }

@@ -46,40 +46,15 @@ public class ArrayList<E> implements List<E> {
     }
 
     public static void main(String[] args) {
-        ArrayList<String> list = new ArrayList<String>();
-//        list.add("1");
-//        list.add(2, "11");
-//        list.add("str1", 0);
-//        list.add("str2", 1);
-//        list.add("str3", 2);
-//        list.add("str4", 3);
-//        list.add("str5", 4);
-//        list.add("str6", 5);
-//        list.add("1");
-//        list.add("2");
-//        list.add("3");
-//        list.add(1, "new");
-////
-//        for (int i = 0; i < list.size(); i++) {
-//            System.out.println(list.get(i));
-//        }
-        System.out.println(list.get(0));
-//        list.add("str1");
-//        list.add("str2");
-//        list.add("str3");
-//        for (int i = 0; i < list.size(); i++) {
-//            System.out.println(list.get(i));
-//        }
-//        System.out.println("*************");
-//        list.remove(2);
-//        for (int i = 0; i < list.size(); i++) {
-//            System.out.println(list.get(i));
-//        }
-//        list.add(1, "new");
-//        System.out.println("*************");
-//        for (int i = 0; i < list.size(); i++) {
-//            System.out.println(list.get(i));
-//        }
+        ArrayList<String> listEmpty = new ArrayList<String>();
+        listEmpty.add("1");
+        listEmpty.add("2");
+        ArrayList<String> listFull = new ArrayList<String>();
+        listFull.add("3");
+        List<List<String>> listList = new ArrayList<List<String>>();
+        listList.add(listEmpty);
+        listList.add(listFull);
+        Object[][] obj = new Object[][]{{listList, listList}};
     }
 
     public int indexOf(E value) {
