@@ -1,5 +1,7 @@
 package com.miskevich.datastructures;
 
+import java.util.StringJoiner;
+
 public class ArrayList<E> implements List<E> {
 
     private Object[] array;
@@ -21,7 +23,7 @@ public class ArrayList<E> implements List<E> {
     }
 
     public void add(int index, E value) {
-        validateIndex(index);
+        validateElementIndex(index);
         ensureCapacity();
 
         System.arraycopy(array, index, array, index + 1, size - index);
@@ -35,26 +37,6 @@ public class ArrayList<E> implements List<E> {
             System.arraycopy(array, 0, newBiggerArray, 0, array.length);
             array = newBiggerArray;
         }
-    }
-
-    private void validateIndex(int index) {
-        if (index < 0 || index >= size + 1) {
-            String msg = "Incorrect index -> " + index +
-                    ", index should be between 0 and " + size;
-            throw new IllegalArgumentException(msg);
-        }
-    }
-
-    public static void main(String[] args) {
-        ArrayList<String> listEmpty = new ArrayList<String>();
-        listEmpty.add("1");
-        listEmpty.add("2");
-        ArrayList<String> listFull = new ArrayList<String>();
-        listFull.add("3");
-        List<List<String>> listList = new ArrayList<List<String>>();
-        listList.add(listEmpty);
-        listList.add(listFull);
-        Object[][] obj = new Object[][]{{listList, listList}};
     }
 
     public int indexOf(E value) {
@@ -88,7 +70,7 @@ public class ArrayList<E> implements List<E> {
     }
 
     public E set(int index, E value) {
-        validateIndex(index);
+        validatePositionIndex(index);
         E oldValue = (E) array[index];
         array[index] = value;
         return oldValue;
@@ -102,16 +84,44 @@ public class ArrayList<E> implements List<E> {
     }
 
     public E get(int index) {
-        validateIndex(index);
+        validatePositionIndex(index);
         return (E) array[index];
     }
 
     public E remove(int index) {
-        validateIndex(index);
+        validatePositionIndex(index);
 
         E removedValue = (E) array[index];
         System.arraycopy(array, index + 1, array, index, size - 1);
         size--;
         return removedValue;
+    }
+
+    public String toString(){
+        StringJoiner joiner = new StringJoiner(", ", "[", "]");
+        for (int i = 0; i < size; i++) {
+            joiner.add(String.valueOf(array[i]));
+        }
+
+        return joiner.toString();
+    }
+
+    private void validateElementIndex(int index) {
+        if (index < 0 || index > size) {
+            String msg = "Incorrect element index -> " + index +
+                    ", index should be between 0 and " + size;
+            throw new IllegalArgumentException(msg);
+        }
+    }
+
+    private void validatePositionIndex(int index) {
+        if(index == 0 && size == 0){
+            String msg = "Current operation is prohibited for empty list: index = 0, size = 0";
+            throw new IndexOutOfBoundsException(msg);
+        }else if (index < 0 || index >= size) {
+            String msg = "Incorrect position index -> " + index +
+                    ", index should be between 0 and " + (size -1);
+            throw new IllegalArgumentException(msg);
+        }
     }
 }
