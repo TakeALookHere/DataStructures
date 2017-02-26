@@ -32,8 +32,8 @@ public class ArrayList<E> implements List<E> {
     }
 
     private void ensureCapacity() {
-        if (size == INITIAL_CAPACITY){
-            Object[] newBiggerArray = new Object[(int) Math.round (INITIAL_CAPACITY * 1.5)];
+        if(size == array.length){
+            Object[] newBiggerArray = new Object[(int) Math.round (array.length * 1.5)];
             System.arraycopy(array, 0, newBiggerArray, 0, array.length);
             array = newBiggerArray;
         }
