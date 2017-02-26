@@ -8,6 +8,7 @@ public class HashMap<K, V> {
 
     private int size;
     private final int INITIAL_CAPACITY = 5;
+    private final float LOAD_FACTOR = 0.75f;
     private List<Entry<K, V>>[] entries = new ArrayList[INITIAL_CAPACITY];
 
     public HashMap() {
@@ -18,19 +19,19 @@ public class HashMap<K, V> {
         }
     }
 
-
     public int size(){
         return size;
     }
 
     public V put(K key, V value){
-        Entry<K, V> entry = new Entry(key, value);
+        ensureCapacity();
+        Entry<K, V> entry = new Entry<>(key, value);
         int index = getIndex(key);
         List<Entry<K, V>> bucket = entries[index];
 
-        for (Entry temp : bucket) {
+        for (Entry<K, V> temp : bucket) {
             if(temp.key.equals(key)){
-                V oldValue = (V) temp.value;
+                V oldValue = temp.value;
                 temp.value = value;
                 return oldValue;
             }
@@ -45,7 +46,7 @@ public class HashMap<K, V> {
     public boolean containsKey(K key){
         int index = getIndex(key);
         List<Entry<K, V>> bucket = entries[index];
-        for (Entry entry : bucket) {
+        for (Entry<K, V> entry : bucket) {
             if(entry.key.equals(key)) {
                 return true;
             }
@@ -70,9 +71,9 @@ public class HashMap<K, V> {
     public V get(K key){
         int index = getIndex(key);
         List<Entry<K, V>> bucket = entries[index];
-        for (Entry entry : bucket) {
+        for (Entry<K, V> entry : bucket) {
             if(entry.key.equals(key)){
-                return (V) entry.value;
+                return entry.value;
             }
         }
         String msg = "No element were found with key = " + key;
@@ -109,6 +110,28 @@ public class HashMap<K, V> {
 
     private int getIndex(K key) {
         return Math.abs(key.hashCode() % entries.length);
+    }
+
+    private void ensureCapacity(){
+        int oldCapacity = entries.length;
+        if(size > oldCapacity * LOAD_FACTOR){
+            int newCapacity = oldCapacity * 2;
+            List<Entry<K, V>> [] newBiggerEntries = new ArrayList[newCapacity];
+            for (int i = 0; i < newBiggerEntries.length; i++) {
+                if (newBiggerEntries[i] == null) {
+                    newBiggerEntries[i] = new ArrayList<>();
+                }
+            }
+            for (int i = 0; i < entries.length; i++) {
+                for (int j = 0; j < entries[i].size(); j++) {
+                    int newIndex = Math.abs(entries[i].get(j).key.hashCode() % newCapacity);
+                    List<Entry<K, V>> newBucket = newBiggerEntries[newIndex];
+                    Entry<K, V> entry = new Entry<>(entries[i].get(j).key, entries[i].get(j).value);
+                    newBucket.add(entry);
+                }
+            }
+            entries = newBiggerEntries;
+        }
     }
 
     public String toString(){

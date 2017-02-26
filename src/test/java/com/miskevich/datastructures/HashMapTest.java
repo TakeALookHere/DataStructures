@@ -140,4 +140,25 @@ public class HashMapTest {
         assertEquals(map.size(), 0);
     }
 
+    @Test
+    public void testEnsureCapacity(){
+        map.put(1, "str1");
+        map.put(2, "str2");
+        map.put(3, "str3");
+        map.put(4, "str4");
+        assertEquals(map.size(), 4);
+        map.put(5, "str5");
+        assertEquals(map.size(), 5);
+        assertEquals(map.containsKey(1), true);
+        assertEquals(map.containsValue("str1"), true);
+        assertEquals(map.containsKey(2), true);
+        assertEquals(map.containsValue("str2"), true);
+        assertEquals(map.containsKey(3), true);
+        assertEquals(map.containsValue("str3"), true);
+        assertEquals(map.containsKey(4), true);
+        assertEquals(map.containsValue("str4"), true);
+        assertEquals(map.containsKey(5), true);
+        assertEquals(map.containsValue("str5"), true);
+    }
+
 }
