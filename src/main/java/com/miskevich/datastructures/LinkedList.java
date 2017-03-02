@@ -2,7 +2,7 @@ package com.miskevich.datastructures;
 
 import java.util.StringJoiner;
 
-public class LinkedList<E> implements List<E> {
+public class LinkedList<E> extends AbstractList implements List<E> {
 
     private int size;
     private Node<E> head;
@@ -13,34 +13,37 @@ public class LinkedList<E> implements List<E> {
     }
 
     public void add(E value) {
-        Node<E> node = new Node<>(value);
-        if(size == 0){
-            head = tail = node;
-        }else {
-            tail.next = node;
-            node.prev = tail;
-            tail = node;
-        }
-        size++;
+        add(size, value);
     }
 
     public void add(int index, E value) {
-        validateElementIndex(index);
+        validateElementIndex(index, size);
         Node<E> node = new Node<>(value);
-        Node<E> currentNode = node(index);
-        if(index == size){
-            add(value);
+        if(size == 0){
+            head = tail = node;
+        }else if(index == size){
+            tail.next = node;
+            node.prev = tail;
+            tail = node;
         }else if(index == 0){
+            Node<E> currentNode = node(index);
             head = node;
             node.next = currentNode;
-            size++;
         }else {
+            Node<E> currentNode = node(index);
             Node<E> prev = currentNode.prev;
             node.prev = prev;
             node.next = currentNode;
             prev.next = node;
-            size++;
         }
+
+        size++;
+    }
+
+    public static void main(String[] args) {
+        List<String> list = new LinkedList<>();
+        list.add(0, "str");
+        System.out.println(list.size());
     }
 
     public int indexOf(E value) {
@@ -88,20 +91,23 @@ public class LinkedList<E> implements List<E> {
     }
 
     public E set(int index, E value) {
-        validatePositionIndex(index);
-        Node<E> currentNode = node(index);
+        validatePositionIndex(index, size);
+        Node<E> currentNode;
         Node<E> node = new Node<>(value);
         if(index == size-1){
+            currentNode = tail;
             tail = node;
             Node<E> prev = currentNode.prev;
             node.prev = prev;
             prev.next = node;
         }else if(index == 0){
+            currentNode = node(index);
             Node<E> next = currentNode.next;
             head = node;
             node.next = next;
             next.prev = node;
         }else {
+            currentNode = node(index);
             Node<E> next = currentNode.next;
             Node<E> prev = currentNode.prev;
             node.next = next;
@@ -126,12 +132,12 @@ public class LinkedList<E> implements List<E> {
     }
 
     public E get(int index) {
-        validatePositionIndex(index);
+        validatePositionIndex(index, size);
         return node(index).value;
     }
 
     public E remove(int index) {
-        validatePositionIndex(index);
+        validatePositionIndex(index, size);
         Node<E> currentNode = node(index);
         if(index == size - 1){
             Node<E> prev = currentNode.prev;
@@ -179,35 +185,18 @@ public class LinkedList<E> implements List<E> {
         return joiner.toString();
     }
 
-    private void validateElementIndex(int index) {
-        if (index < 0 || index > size) {
-            String msg = "Incorrect element index -> " + index +
-                    ", index should be between 0 and " + size;
-            throw new IllegalArgumentException(msg);
-        }
-    }
-
-    private void validatePositionIndex(int index) {
-        if(index == 0 && size == 0){
-            String msg = "Current operation is prohibited for empty list: index = 0, size = 0";
-            throw new IndexOutOfBoundsException(msg);
-        }else if (index < 0 || index >= size) {
-            String msg = "Incorrect position index -> " + index +
-                    ", index should be between 0 and " + (size -1);
-            throw new IllegalArgumentException(msg);
-        }
-    }
-
     private Node<E> node(int index){
         if(index < size / 2){
             Node<E> currentNode = head;
-            for (int i = 0; i < index; i++)
+            for (int i = 0; i < index; i++) {
                 currentNode = currentNode.next;
+            }
                 return currentNode;
         }else {
             Node<E> currentNode = tail;
-            for (int i = size - 1; i > index; i--)
+            for (int i = size - 1; i > index; i--) {
                 currentNode = currentNode.prev;
+            }
                 return currentNode;
         }
     }

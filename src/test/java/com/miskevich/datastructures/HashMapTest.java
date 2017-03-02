@@ -5,7 +5,9 @@ import org.testng.annotations.Test;
 
 import java.util.NoSuchElementException;
 
-import static org.testng.Assert.*;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertTrue;
 
 public class HashMapTest {
 
@@ -20,8 +22,8 @@ public class HashMapTest {
     public void testPutEmptyMap(){
         map.put(1, "str1");
         assertEquals(map.size(), 1);
-        assertEquals(map.containsKey(1), true);
-        assertEquals(map.containsValue("str1"), true);
+        assertTrue(map.containsKey(1));
+        assertTrue(map.containsValue("str1"));
     }
 
     @Test
@@ -29,10 +31,10 @@ public class HashMapTest {
         map.put(1, "str1");
         map.put(2, "str2");
         assertEquals(map.size(), 2);
-        assertEquals(map.containsKey(1), true);
-        assertEquals(map.containsValue("str1"), true);
-        assertEquals(map.containsKey(2), true);
-        assertEquals(map.containsValue("str2"), true);
+        assertTrue(map.containsKey(1));
+        assertTrue(map.containsValue("str1"));
+        assertTrue(map.containsKey(2));
+        assertTrue(map.containsValue("str2"));
     }
 
     @Test
@@ -40,35 +42,31 @@ public class HashMapTest {
         map.put(1, "str1");
         map.put(1, "str2");
         assertEquals(map.size(), 1);
-        assertEquals(map.containsKey(1), true);
-        assertEquals(map.containsValue("str1"), false);
-        assertEquals(map.containsValue("str2"), true);
+        assertTrue(map.containsKey(1));
+        assertFalse(map.containsValue("str1"));
+        assertTrue(map.containsValue("str2"));
     }
 
     @Test
     public void testContainsKeyTrue(){
         map.put(1, "str1");
-        boolean actual = map.containsKey(1);
-        assertEquals(actual, true);
+        assertTrue( map.containsKey(1));
     }
 
     @Test
     public void testContainsKeyFalse(){
-        boolean actual = map.containsKey(1);
-        assertEquals(actual, false);
+        assertFalse(map.containsKey(1));
     }
 
     @Test
     public void testContainsValueTrue(){
         map.put(1, "str1");
-        boolean actual = map.containsValue("str1");
-        assertEquals(actual, true);
+        assertTrue(map.containsValue("str1"));
     }
 
     @Test
     public void testContainsValueFalse(){
-        boolean actual = map.containsValue("str1");
-        assertEquals(actual, false);
+        assertFalse(map.containsValue("str1"));
     }
 
     @Test
@@ -91,15 +89,13 @@ public class HashMapTest {
 
     @Test
     public void testIsEmptyTrue(){
-        boolean actual = map.isEmpty();
-        assertEquals(actual, true);
+        assertTrue(map.isEmpty());
     }
 
     @Test
     public void testIsEmptyFalse(){
         map.put(1, "str1");
-        boolean actual = map.isEmpty();
-        assertEquals(actual, false);
+        assertFalse(map.isEmpty());
     }
 
     @Test(expectedExceptions = NoSuchElementException.class, expectedExceptionsMessageRegExp = "No element were found with key = 0")
@@ -121,8 +117,8 @@ public class HashMapTest {
         assertEquals(map.size(), 1);
         map.remove(2);
         assertEquals(map.size(), 1);
-        assertEquals(map.containsKey(1), true);
-        assertEquals(map.containsValue("str1"), true);
+        assertTrue(map.containsKey(1));
+        assertTrue(map.containsValue("str1"));
     }
 
     @Test
@@ -149,16 +145,16 @@ public class HashMapTest {
         assertEquals(map.size(), 4);
         map.put(5, "str5");
         assertEquals(map.size(), 5);
-        assertEquals(map.containsKey(1), true);
-        assertEquals(map.containsValue("str1"), true);
-        assertEquals(map.containsKey(2), true);
-        assertEquals(map.containsValue("str2"), true);
-        assertEquals(map.containsKey(3), true);
-        assertEquals(map.containsValue("str3"), true);
-        assertEquals(map.containsKey(4), true);
-        assertEquals(map.containsValue("str4"), true);
-        assertEquals(map.containsKey(5), true);
-        assertEquals(map.containsValue("str5"), true);
+        assertTrue(map.containsKey(1));
+        assertTrue(map.containsValue("str1"));
+        assertTrue(map.containsKey(2));
+        assertTrue(map.containsValue("str2"));
+        assertTrue(map.containsKey(3));
+        assertTrue(map.containsValue("str3"));
+        assertTrue(map.containsKey(4));
+        assertTrue(map.containsValue("str4"));
+        assertTrue(map.containsKey(5));
+        assertTrue(map.containsValue("str5"));
     }
 
 }
