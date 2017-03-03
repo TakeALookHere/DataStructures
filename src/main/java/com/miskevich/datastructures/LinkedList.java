@@ -40,12 +40,6 @@ public class LinkedList<E> extends AbstractList implements List<E> {
         size++;
     }
 
-    public static void main(String[] args) {
-        List<String> list = new LinkedList<>();
-        list.add(0, "str");
-        System.out.println(list.size());
-    }
-
     public int indexOf(E value) {
         Node<E> currentNode = head;
         if(value == null){

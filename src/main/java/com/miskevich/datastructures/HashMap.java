@@ -18,12 +18,19 @@ public class HashMap<K, V> {
         }
     }
 
+    public static void main(String[] args) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put(null, null);
+        System.out.println(map);
+        System.out.println(map.get(null));
+    }
+
     public int size(){
         return size;
     }
 
     public V put(K key, V value){
-        ensureCapacity();
+        extendCapacityCheck();
         Entry<K, V> entry = new Entry<>(key, value);
         int index = getIndex(key);
         List<Entry<K, V>> bucket = entries[index];
@@ -107,10 +114,13 @@ public class HashMap<K, V> {
     }
 
     private int getIndex(K key) {
+        if(key == null){
+            return 0;
+        }
         return Math.abs(key.hashCode() % entries.length);
     }
 
-    private void ensureCapacity(){
+    private void extendCapacityCheck(){
         int oldCapacity = entries.length;
         if(size > oldCapacity * LOAD_FACTOR){
             int newCapacity = oldCapacity * 2;
