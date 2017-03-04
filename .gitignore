@@ -2,5 +2,6 @@
 ### Java template
 *.class
 /.idea
+*.iml
 
 
