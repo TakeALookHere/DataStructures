@@ -39,7 +39,6 @@ public class ArrayBlockingQueue<E> extends AbstractBlockingQueue<E> implements Q
                 items[takeIndex] = null;
                 takeIndex++;
                 countOfElementsInQueue--;
-                //putIndex--;
                 if(takeIndex >= capacity){
                     takeIndex = 0;
                 }
@@ -60,7 +59,6 @@ public class ArrayBlockingQueue<E> extends AbstractBlockingQueue<E> implements Q
                     throw new RuntimeException(e);
                 }
             }
-            //items[countOfElementsInQueue] = value;
             items[putIndex] = value;
             putIndex++;
             countOfElementsInQueue++;
@@ -69,27 +67,6 @@ public class ArrayBlockingQueue<E> extends AbstractBlockingQueue<E> implements Q
             }
             items.notifyAll();
         }
-    }
-
-    public static void main(String[] args) {
-        Queue<String> queue = new ArrayBlockingQueue<>(5);
-        queue.push("str0");
-        queue.push("str1");
-        queue.push("str2");
-        queue.push("str3");
-        queue.push("str4");
-        System.out.println(queue);
-        queue.poll();
-        System.out.println(queue);
-        queue.push("new");
-        System.out.println(queue);
-        System.out.println(queue.poll());
-        System.out.println(queue.poll());
-        System.out.println(queue.poll());
-        System.out.println(queue.poll());
-        System.out.println(queue);
-        System.out.println(queue.poll());
-        System.out.println(queue);
     }
 
     public int size() {
