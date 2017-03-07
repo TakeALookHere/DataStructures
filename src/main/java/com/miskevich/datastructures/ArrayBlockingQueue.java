@@ -24,28 +24,36 @@ public class ArrayBlockingQueue<E> extends AbstractBlockingQueue<E> implements Q
 
     public E peek() {
         synchronized (items){
-            if(countOfElementsInQueue > 0){
-                return items[takeIndex];
-            }else {
-                return null;
+            while (countOfElementsInQueue == 0){
+                try {
+                    items.wait();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
             }
+            items.notifyAll();
+            return items[takeIndex];
         }
     }
 
     public E poll() {
         synchronized (items){
-            if(countOfElementsInQueue > 0){
-                E value = items[takeIndex];
-                items[takeIndex] = null;
-                takeIndex++;
-                countOfElementsInQueue--;
-                if(takeIndex >= capacity){
-                    takeIndex = 0;
+            while (countOfElementsInQueue == 0){
+                try {
+                    items.wait();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
                 }
-                return value;
-            }else {
-                return null;
             }
+            E value = items[takeIndex];
+            items[takeIndex] = null;
+            takeIndex++;
+            countOfElementsInQueue--;
+            if(takeIndex >= capacity){
+                takeIndex = 0;
+            }
+            items.notifyAll();
+            return value;
         }
     }
 

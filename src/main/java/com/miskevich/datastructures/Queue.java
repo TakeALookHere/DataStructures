@@ -2,16 +2,14 @@ package com.miskevich.datastructures;
 
 public interface Queue<E> {
     /**
-     * returns, but not remove the head of the queue
-     * or returns {@code null} if the queue is empty
-     * @return the head of the queue, or {@code null} if the queue is empty
+     * returns, but not remove the head of the queue if it's not empty
+     * @return the head of the queue if it's not empty
      */
     E peek ();
 
     /**
-     * removes the head of queue, returns removed element
-     * or returns {@code null} if the queue is empty
-     * @return the head of the queue, or {@code null} if this queue is empty
+     * removes the head of queue if it's not empty, returns removed element
+     * @return the head of the queue if it's not empty
      */
     E poll();
 

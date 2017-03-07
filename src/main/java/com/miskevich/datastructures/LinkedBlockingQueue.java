@@ -22,30 +22,38 @@ public class LinkedBlockingQueue<E> extends AbstractBlockingQueue<E> implements 
 
     public E peek() {
         synchronized (this){
-            if(countOfElementsInQueue > 0){
-                Node<E> temp = head;
-                Node<E> firstElementInQueue = temp.next;
-                return firstElementInQueue.value;
-            }else {
-                return null;
+            while (countOfElementsInQueue == 0){
+                try {
+                    this.wait();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
             }
+            Node<E> temp = head;
+            Node<E> firstElementInQueue = temp.next;
+            this.notifyAll();
+            return firstElementInQueue.value;
         }
     }
 
     public E poll() {
         synchronized (this){
-            if(countOfElementsInQueue > 0){
-                Node<E> temp = head;
-                Node<E> firstElementInQueue = temp.next;
-                temp.next = null;
-                head = firstElementInQueue;
-                E elementForRemoval = firstElementInQueue.value;
-                firstElementInQueue.value = null;
-                countOfElementsInQueue--;
-                return elementForRemoval;
-            }else {
-                return null;
+            while (countOfElementsInQueue == 0){
+                try {
+                    this.wait();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
             }
+            Node<E> temp = head;
+            Node<E> firstElementInQueue = temp.next;
+            temp.next = null;
+            head = firstElementInQueue;
+            E elementForRemoval = firstElementInQueue.value;
+            firstElementInQueue.value = null;
+            countOfElementsInQueue--;
+            this.notifyAll();
+            return elementForRemoval;
         }
     }
 

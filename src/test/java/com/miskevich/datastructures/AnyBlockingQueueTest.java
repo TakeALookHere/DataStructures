@@ -2,7 +2,6 @@ package com.miskevich.datastructures;
 
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-
 import static org.testng.Assert.*;
 
 public class AnyBlockingQueueTest {
@@ -19,12 +18,7 @@ public class AnyBlockingQueueTest {
     }
 
     @Test(dataProvider = "provideQueues")
-    public void testPeekEmptyQueue(Queue<String> blockingQueue){
-        assertEquals(blockingQueue.peek(), null);
-    }
-
-    @Test(dataProvider = "provideQueues")
-    public void testPeekNotEmptyQueue(Queue<String> blockingQueue){
+    public void testPeek(Queue<String> blockingQueue){
         blockingQueue.push("str0");
         blockingQueue.push("str1");
         assertEquals(blockingQueue.peek(), "str0");
@@ -32,12 +26,7 @@ public class AnyBlockingQueueTest {
     }
 
     @Test(dataProvider = "provideQueues")
-    public void testPollEmptyQueue(Queue<String> blockingQueue){
-        assertEquals(blockingQueue.poll(), null);
-    }
-
-    @Test(dataProvider = "provideQueues")
-    public void testPollNotEmptyQueue(Queue<String> blockingQueue){
+    public void testPoll(Queue<String> blockingQueue){
         blockingQueue.push("str0");
         blockingQueue.push("str1");
         assertEquals(blockingQueue.poll(), "str0");
