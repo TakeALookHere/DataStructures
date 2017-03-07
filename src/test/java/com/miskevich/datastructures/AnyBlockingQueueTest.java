@@ -10,11 +10,11 @@ public class AnyBlockingQueueTest {
     @DataProvider(name = "provideQueues")
     public Object[][] provideData() {
         Queue<String> blockingQueueArray = new ArrayBlockingQueue<>(3);
-        Queue<String> blockingQueueLinked = new LinkedBlockingQueue<>(3);
+        //Queue<String> blockingQueueLinked = new LinkedBlockingQueue<>(3);
 
         return new Object[][] {
-                { blockingQueueArray },
-                { blockingQueueLinked }
+                { blockingQueueArray }//,
+                //{ blockingQueueLinked }
         };
     }
 
@@ -85,6 +85,32 @@ public class AnyBlockingQueueTest {
     @Test(expectedExceptions = IllegalArgumentException.class, expectedExceptionsMessageRegExp = "Capacity of the queue can't be <= 0")
     public void testInvalidCapacityLinkedQueue(){
         new LinkedBlockingQueue<>(-1);
+    }
+
+    @Test(dataProvider = "provideQueues")
+    public void testPushToCorrectIndexAfterRemoval(Queue<String> blockingQueue){
+        blockingQueue.push("str0");
+        blockingQueue.push("str1");
+        blockingQueue.push("str2");
+        blockingQueue.push("str3");
+        blockingQueue.push("str4");
+        assertEquals(blockingQueue.size(), 5);
+        assertEquals(String.valueOf(blockingQueue), "[str0, str1, str2, str3, str4]");
+        assertEquals(blockingQueue.poll(), "str0");
+        assertEquals(blockingQueue.size(), 4);
+        blockingQueue.push("new");
+        assertEquals(blockingQueue.size(), 5);
+        assertEquals(String.valueOf(blockingQueue), "[new, str1, str2, str3, str4]");
+        assertEquals(blockingQueue.poll(), "str1");
+        assertEquals(blockingQueue.size(), 4);
+        assertEquals(blockingQueue.poll(), "str2");
+        assertEquals(blockingQueue.size(), 3);
+        assertEquals(blockingQueue.poll(), "str3");
+        assertEquals(blockingQueue.size(), 2);
+        assertEquals(blockingQueue.poll(), "str4");
+        assertEquals(blockingQueue.size(), 1);
+        assertEquals(blockingQueue.poll(), "new");
+        assertEquals(blockingQueue.size(), 0);
     }
 
 }

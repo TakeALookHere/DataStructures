@@ -17,6 +17,7 @@ public interface Queue<E> {
 
     /**
      * Put element in the tail of the queue
+     * null values for elements are prohibited
      * @param value element to add
      */
     void push(E value);

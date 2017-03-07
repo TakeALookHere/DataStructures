@@ -7,8 +7,12 @@ public class ArrayBlockingQueue<E> extends AbstractBlockingQueue<E> implements Q
     private int countOfElementsInQueue;
     private final E[] items;
     private int takeIndex;
+    private int putIndex;
     private int capacity;
 
+    /**
+     * @param capacity has to be > 0
+     */
     @SuppressWarnings("unchecked")
     public ArrayBlockingQueue(int capacity) {
         if (capacity <= 0) {
@@ -35,6 +39,7 @@ public class ArrayBlockingQueue<E> extends AbstractBlockingQueue<E> implements Q
                 items[takeIndex] = null;
                 takeIndex++;
                 countOfElementsInQueue--;
+                //putIndex--;
                 if(takeIndex >= capacity){
                     takeIndex = 0;
                 }
@@ -55,10 +60,36 @@ public class ArrayBlockingQueue<E> extends AbstractBlockingQueue<E> implements Q
                     throw new RuntimeException(e);
                 }
             }
-            items[countOfElementsInQueue] = value;
+            //items[countOfElementsInQueue] = value;
+            items[putIndex] = value;
+            putIndex++;
             countOfElementsInQueue++;
+            if(putIndex >= capacity){
+                putIndex = 0;
+            }
             items.notifyAll();
         }
+    }
+
+    public static void main(String[] args) {
+        Queue<String> queue = new ArrayBlockingQueue<>(5);
+        queue.push("str0");
+        queue.push("str1");
+        queue.push("str2");
+        queue.push("str3");
+        queue.push("str4");
+        System.out.println(queue);
+        queue.poll();
+        System.out.println(queue);
+        queue.push("new");
+        System.out.println(queue);
+        System.out.println(queue.poll());
+        System.out.println(queue.poll());
+        System.out.println(queue.poll());
+        System.out.println(queue.poll());
+        System.out.println(queue);
+        System.out.println(queue.poll());
+        System.out.println(queue);
     }
 
     public int size() {
@@ -68,9 +99,9 @@ public class ArrayBlockingQueue<E> extends AbstractBlockingQueue<E> implements Q
 
     public String toString(){
         StringJoiner joiner = new StringJoiner(", ", "[", "]");
-        for (int i = 0; i < items.length; i++) {
-            if(items[i] != null) {
-                joiner.add(String.valueOf(items[i]));
+        for (E item : items) {
+            if (item != null) {
+                joiner.add(String.valueOf(item));
             }
         }
         return joiner.toString();

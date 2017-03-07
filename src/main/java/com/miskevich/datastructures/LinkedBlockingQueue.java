@@ -9,6 +9,9 @@ public class LinkedBlockingQueue<E> extends AbstractBlockingQueue<E> implements 
     private Node<E> head;
     private Node<E> tail;
 
+    /**
+     * @param capacity has to be > 0
+     */
     public LinkedBlockingQueue(int capacity) {
         if (capacity <= 0) {
             throw new IllegalArgumentException("Capacity of the queue can't be <= 0");
