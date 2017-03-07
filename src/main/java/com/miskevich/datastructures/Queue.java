@@ -1,12 +1,29 @@
 package com.miskevich.datastructures;
 
 public interface Queue<E> {
-    //return, but not remove the head of the queue
-    //{@code null} if this queue is empty
+    /**
+     * returns, but not remove the head of the queue
+     * or returns {@code null} if the queue is empty
+     * @return the head of the queue, or {@code null} if the queue is empty
+     */
     E peek ();
-    //removes the head of queue, return removed element
-    //{@code null} if this queue is empty
+
+    /**
+     * removes the head of queue, returns removed element
+     * or returns {@code null} if the queue is empty
+     * @return the head of the queue, or {@code null} if this queue is empty
+     */
     E poll();
+
+    /**
+     * Put element in the tail of the queue
+     * @param value element to add
+     */
     void push(E value);
+
+    /**
+     * Get count of elements in the queue
+     * @return count of elements in the queue
+     */
     int size();
 }
