@@ -1,5 +1,8 @@
-package com.miskevich.datastructures;
+package com.miskevich.datastructures.list;
 
+import com.miskevich.datastructures.list.ArrayList;
+import com.miskevich.datastructures.list.LinkedList;
+import com.miskevich.datastructures.list.List;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 

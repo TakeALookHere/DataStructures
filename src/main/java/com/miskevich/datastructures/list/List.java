@@ -1,4 +1,4 @@
-package com.miskevich.datastructures;
+package com.miskevich.datastructures.list;
 
 public interface List<E> {
 

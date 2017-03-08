@@ -1,4 +1,4 @@
-package com.miskevich.datastructures;
+package com.miskevich.datastructures.map;
 
 import java.util.*;
 import java.util.ArrayList;

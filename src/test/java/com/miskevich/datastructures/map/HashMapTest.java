@@ -1,5 +1,6 @@
-package com.miskevich.datastructures;
+package com.miskevich.datastructures.map;
 
+import com.miskevich.datastructures.map.HashMap;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 

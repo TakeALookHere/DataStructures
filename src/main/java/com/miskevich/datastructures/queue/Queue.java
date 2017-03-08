@@ -1,4 +1,4 @@
-package com.miskevich.datastructures;
+package com.miskevich.datastructures.queue;
 
 public interface Queue<E> {
     /**
