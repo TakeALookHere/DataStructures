@@ -5,7 +5,7 @@ import java.util.StringJoiner;
 public class ArrayBlockingQueue<E> extends AbstractBlockingQueue<E>{
 
     private int size;
-    private final E[] items;
+    private E[] items;
     private int takeIndex;
     private int putIndex;
     private int capacity;
@@ -77,16 +77,6 @@ public class ArrayBlockingQueue<E> extends AbstractBlockingQueue<E>{
         return size;
     }
 
-
-//    public String toString(){
-//        StringJoiner joiner = new StringJoiner(", ", "[", "]");
-//        for (E item : items) {
-//            if (item != null) {
-//                joiner.add(String.valueOf(item));
-//            }
-//        }
-//        return joiner.toString();
-//    }
     public String toString(){
         StringJoiner joiner = new StringJoiner(", ", "[", "]");
         if(putIndex != 0){
