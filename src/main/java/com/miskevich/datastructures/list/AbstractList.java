@@ -1,6 +1,6 @@
 package com.miskevich.datastructures.list;
 
-public abstract class AbstractList{
+public abstract class AbstractList<E> implements List<E>{
 
     void validateElementIndex(int index, int size) {
         if (index < 0 || index > size) {
@@ -20,4 +20,9 @@ public abstract class AbstractList{
             throw new IllegalArgumentException(msg);
         }
     }
+
+    public void add(E value) {
+        add(size(), value);
+    }
+
 }

@@ -1,8 +1,9 @@
 package com.miskevich.datastructures.list;
 
+import java.util.Iterator;
 import java.util.StringJoiner;
 
-public class LinkedList<E> extends AbstractList implements List<E> {
+public class LinkedList<E> extends AbstractList<E> {
 
     private int size;
     private Node<E> head;
@@ -10,10 +11,6 @@ public class LinkedList<E> extends AbstractList implements List<E> {
 
     public int size() {
         return size;
-    }
-
-    public void add(E value) {
-        add(size, value);
     }
 
     public void add(int index, E value) {
@@ -151,6 +148,10 @@ public class LinkedList<E> extends AbstractList implements List<E> {
         return currentNode.value;
     }
 
+    public Iterator<E> iterator() {
+        return new MyIterator();
+    }
+
     private static class Node<E>{
         E value;
         Node<E> next;
@@ -160,7 +161,6 @@ public class LinkedList<E> extends AbstractList implements List<E> {
             this.value = value;
         }
 
-        @Override
         public String toString() {
             return "Node{" +
                     "value=" + value +
@@ -192,6 +192,29 @@ public class LinkedList<E> extends AbstractList implements List<E> {
                 currentNode = currentNode.prev;
             }
                 return currentNode;
+        }
+    }
+
+    private class MyIterator implements Iterator<E> {
+        private Node<E> node = head;
+        private int cursor;
+        private int lastReturned;
+
+        public boolean hasNext() {
+            return cursor < size;
+        }
+
+        public E next() {
+            E value = node.value;
+            node = node.next;
+            lastReturned = cursor;
+            cursor++;
+            return value;
+        }
+
+        public void remove() {
+            LinkedList.this.remove(lastReturned);
+            cursor = lastReturned;
         }
     }
 }

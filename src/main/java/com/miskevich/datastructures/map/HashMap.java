@@ -1,10 +1,12 @@
 package com.miskevich.datastructures.map;
 
-import java.util.*;
-import java.util.ArrayList;
-import java.util.List;
+import com.miskevich.datastructures.list.ArrayList;
+import com.miskevich.datastructures.list.List;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+import java.util.StringJoiner;
 
-public class HashMap<K, V> {
+public class HashMap<K, V> implements Iterable<HashMap.Entry<K, V>>{
 
     private int size;
     private final int INITIAL_CAPACITY = 5;
@@ -135,14 +137,19 @@ public class HashMap<K, V> {
     public String toString(){
         StringJoiner joiner = new StringJoiner(", ", "[", "]");
         for (int i = 0; i < entries.length; i++) {
-            if(!entries[i].isEmpty())
+            if(entries[i].size() != 0){
                 joiner.add(String.valueOf(entries[i]));
+            }
         }
 
         return joiner.toString();
     }
 
-    private static class Entry<K, V>{
+    public Iterator<Entry<K, V>> iterator() {
+        return new MyIterator();
+    }
+
+    public static class Entry<K, V>{
         K key;
         V value;
 
@@ -151,12 +158,59 @@ public class HashMap<K, V> {
             this.value = value;
         }
 
+        public K getKey() {
+            return key;
+        }
+
+        public V getValue() {
+            return value;
+        }
+
         @Override
         public String toString() {
             return "Entry{" +
                     "key=" + key +
                     ", value=" + value +
                     '}';
+        }
+    }
+
+    private class MyIterator implements Iterator<Entry<K, V>> {
+        private int entriesCursor;
+        private int lastReturnedEntries;
+        private int listCursor;
+        private int lastReturnedList;
+        private int cursor;
+        private Entry<K, V> currentEntry;
+
+        public boolean hasNext() {
+            return cursor < size;
+        }
+
+        public Entry<K, V> next() {
+            int listSize;
+            do{
+                lastReturnedEntries = entriesCursor;
+                lastReturnedList = listCursor;
+                listSize = entries[lastReturnedEntries].size();
+                if(listSize == 0){
+                    entriesCursor++;
+                }
+            }while (listSize == 0);
+
+            currentEntry = entries[lastReturnedEntries].get(lastReturnedList);
+            cursor++;
+            listCursor++;
+            if(listCursor == listSize){
+                entriesCursor++;
+                listCursor = 0;
+            }
+            return currentEntry;
+        }
+
+        public void remove() {
+            HashMap.this.remove(currentEntry.key);
+            cursor--;
         }
     }
 }

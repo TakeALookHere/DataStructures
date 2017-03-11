@@ -1,8 +1,9 @@
 package com.miskevich.datastructures.list;
 
+import java.util.Iterator;
 import java.util.StringJoiner;
 
-public class ArrayList<E> extends AbstractList implements List<E> {
+public class ArrayList<E> extends AbstractList<E>{
 
     private E[] array;
     private int size;
@@ -15,10 +16,6 @@ public class ArrayList<E> extends AbstractList implements List<E> {
 
     public int size() {
         return size;
-    }
-
-    public void add(E value) {
-        add(size, value);
     }
 
     public void add(int index, E value) {
@@ -104,5 +101,29 @@ public class ArrayList<E> extends AbstractList implements List<E> {
         }
 
         return joiner.toString();
+    }
+
+    public Iterator<E> iterator() {
+        return new MyIterator();
+    }
+
+    private class MyIterator implements Iterator<E>{
+        private int cursor;
+        private int lastReturned;
+
+        public boolean hasNext() {
+            return cursor < size;
+        }
+
+        public E next() {
+            lastReturned = cursor;
+            cursor++;
+            return array[lastReturned];
+        }
+
+        public void remove() {
+            ArrayList.this.remove(lastReturned);
+            cursor = lastReturned;
+        }
     }
 }

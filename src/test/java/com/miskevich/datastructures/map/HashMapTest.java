@@ -1,11 +1,10 @@
 package com.miskevich.datastructures.map;
 
-import com.miskevich.datastructures.map.HashMap;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import java.util.Iterator;
 import java.util.NoSuchElementException;
-
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
@@ -156,6 +155,84 @@ public class HashMapTest {
         assertTrue(map.containsValue("str4"));
         assertTrue(map.containsKey(5));
         assertTrue(map.containsValue("str5"));
+    }
+
+    @Test
+    public void testItrHasNextEmpty(){
+        Iterator<HashMap.Entry<Integer, String>> iterator = map.iterator();
+        assertFalse(iterator.hasNext());
+    }
+
+    @Test
+    public void testItrNext(){
+        map.put(1, "str1");
+        map.put(2, "str2");
+        map.put(3, "str3");
+        int i = 1;
+        for (Iterator<HashMap.Entry<Integer, String>> iterator = map.iterator(); iterator.hasNext();){
+            switch (i){
+                case 1:
+                    assertEquals(String.valueOf(iterator.next()), "Entry{key=1, value=str1}");
+                    i++;
+                    break;
+                case 2:
+                    assertEquals(String.valueOf(iterator.next()), "Entry{key=2, value=str2}");
+                    i++;
+                    break;
+                case 3:
+                    assertEquals(String.valueOf(iterator.next()), "Entry{key=3, value=str3}");
+                    break;
+            }
+        }
+
+    }
+
+    @Test
+    public void testItrRemoveBegin(){
+        map.put(1, "str1");
+        map.put(2, "str2");
+        map.put(3, "str3");
+        assertEquals(map.size(), 3);
+        assertTrue(map.containsKey(1));
+        for (Iterator<HashMap.Entry<Integer, String>> iterator = map.iterator(); iterator.hasNext();){
+            if(iterator.next().getKey().equals(1)){
+                iterator.remove();
+            }
+        }
+        assertEquals(map.size(), 2);
+        assertFalse(map.containsKey(1));
+    }
+
+    @Test
+    public void testItrRemoveCenter(){
+        map.put(1, "str1");
+        map.put(2, "str2");
+        map.put(3, "str3");
+        assertEquals(map.size(), 3);
+        assertTrue(map.containsKey(2));
+        for (Iterator<HashMap.Entry<Integer, String>> iterator = map.iterator(); iterator.hasNext();){
+            if(iterator.next().getKey().equals(2)){
+                iterator.remove();
+            }
+        }
+        assertEquals(map.size(), 2);
+        assertFalse(map.containsKey(2));
+    }
+
+    @Test
+    public void testItrRemoveEnd(){
+        map.put(1, "str1");
+        map.put(2, "str2");
+        map.put(3, "str3");
+        assertEquals(map.size(), 3);
+        assertTrue(map.containsKey(3));
+        for (Iterator<HashMap.Entry<Integer, String>> iterator = map.iterator(); iterator.hasNext();){
+            if(iterator.next().getKey().equals(3)){
+                iterator.remove();
+            }
+        }
+        assertEquals(map.size(), 2);
+        assertFalse(map.containsKey(3));
     }
 
 }

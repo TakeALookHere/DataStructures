@@ -1,10 +1,8 @@
 package com.miskevich.datastructures.list;
 
-import com.miskevich.datastructures.list.ArrayList;
-import com.miskevich.datastructures.list.LinkedList;
-import com.miskevich.datastructures.list.List;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import java.util.Iterator;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
@@ -254,4 +252,68 @@ public class AnyListTest {
         assertEquals(arrayWithData.size(), 2);
     }
 
+    @Test(dataProvider = "provideLists")
+    public void testItrHasNextEmptyList(List<String> arrayWithData){
+        arrayWithData.clear();
+        assertEquals(arrayWithData.size(), 0);
+        Iterator<String> iterator = arrayWithData.iterator();
+        assertFalse(iterator.hasNext());
+    }
+
+    @Test(dataProvider = "provideLists")
+    public void testItrHasNext(List<String> arrayWithData){
+        Iterator<String> iterator = arrayWithData.iterator();
+        boolean hasNext;
+        for (int i = 0; i < arrayWithData.size(); i++) {
+            hasNext = iterator.hasNext();
+            assertTrue(hasNext);
+            iterator.next();
+        }
+        hasNext = iterator.hasNext();
+        assertFalse(hasNext);
+    }
+
+    @Test(dataProvider = "provideLists")
+    public void testItrNext(List<String> arrayWithData){
+        Iterator<String> iterator = arrayWithData.iterator();
+        for (int i = 0; i < arrayWithData.size(); i++) {
+            assertEquals(iterator.next(), arrayWithData.get(i));
+        }
+    }
+
+    @Test(dataProvider = "provideLists")
+    public void testItrRemoveBegin(List<String> arrayWithData){
+        for (Iterator<String> iterator = arrayWithData.iterator(); iterator.hasNext();){
+            if(iterator.next().equals("str1")){
+                iterator.remove();
+            }
+        }
+        assertEquals(arrayWithData.size(), 2);
+        assertEquals(arrayWithData.get(0), "str2");
+        assertEquals(arrayWithData.get(1), "str3");
+    }
+
+    @Test(dataProvider = "provideLists")
+    public void testItrRemoveCenter(List<String> arrayWithData){
+        for (Iterator<String> iterator = arrayWithData.iterator(); iterator.hasNext();){
+            if(iterator.next().equals("str2")){
+                iterator.remove();
+            }
+        }
+        assertEquals(arrayWithData.size(), 2);
+        assertEquals(arrayWithData.get(0), "str1");
+        assertEquals(arrayWithData.get(1), "str3");
+    }
+
+    @Test(dataProvider = "provideLists")
+    public void testItrRemoveEnd(List<String> arrayWithData){
+        for (Iterator<String> iterator = arrayWithData.iterator(); iterator.hasNext();){
+            if(iterator.next().equals("str3")){
+                iterator.remove();
+            }
+        }
+        assertEquals(arrayWithData.size(), 2);
+        assertEquals(arrayWithData.get(0), "str1");
+        assertEquals(arrayWithData.get(1), "str2");
+    }
 }
