@@ -136,12 +136,11 @@ public class HashMap<K, V> implements Iterable<HashMap.Entry<K, V>>{
 
     public String toString(){
         StringJoiner joiner = new StringJoiner(", ", "[", "]");
-        for (int i = 0; i < entries.length; i++) {
-            if(entries[i].size() != 0){
-                joiner.add(String.valueOf(entries[i]));
+        for (List<Entry<K, V>> entry : entries) {
+            if (entry.size() != 0) {
+                joiner.add(String.valueOf(entry));
             }
         }
-
         return joiner.toString();
     }
 

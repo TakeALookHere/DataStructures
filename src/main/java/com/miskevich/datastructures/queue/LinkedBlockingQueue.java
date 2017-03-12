@@ -1,5 +1,6 @@
 package com.miskevich.datastructures.queue;
 
+import java.util.Iterator;
 import java.util.StringJoiner;
 
 public class LinkedBlockingQueue<E> extends AbstractBlockingQueue<E>{
@@ -84,6 +85,10 @@ public class LinkedBlockingQueue<E> extends AbstractBlockingQueue<E>{
         return joiner.toString();
     }
 
+    public Iterator<E> iterator() {
+        return new MyIterator();
+    }
+
     private static class Node<E>{
         E value;
         Node<E> next;
@@ -97,6 +102,50 @@ public class LinkedBlockingQueue<E> extends AbstractBlockingQueue<E>{
             return "Node{" +
                     "value=" + value +
                     '}';
+        }
+    }
+
+    private class MyIterator implements Iterator<E>{
+        private Node<E> currentNode = head;
+        private int cursor;
+        private Node<E> lastReturned;
+        private Node<E> prev;
+
+        public boolean hasNext() {
+            synchronized (MyIterator.class){
+                return cursor < size;
+            }
+        }
+
+        public E next() {
+            synchronized (MyIterator.class){
+                E value = currentNode.value;
+                prev = lastReturned;
+                lastReturned = currentNode;
+                currentNode = currentNode.next;
+                cursor++;
+                return value;
+            }
+        }
+
+        public void remove() {
+            synchronized (MyIterator.class){
+                if(lastReturned == head){
+                    head = currentNode;
+                    lastReturned.next = null;
+                    lastReturned.value = null;
+                }else if(lastReturned.next == null){
+                    prev.next = null;
+                    tail = prev;
+                    lastReturned.value = null;
+                }else {
+                    prev.next = currentNode;
+                    lastReturned.next = null;
+                    lastReturned.value = null;
+                }
+                cursor--;
+                size--;
+            }
         }
     }
 }

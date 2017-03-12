@@ -1,6 +1,8 @@
 package com.miskevich.datastructures.queue;
 
-public interface Queue<E> {
+import java.util.Iterator;
+
+public interface Queue<E> extends Iterable<E>{
     /**
      * returns, but not remove the head of the queue if it's not empty
      * @return the head of the queue if it's not empty
@@ -25,4 +27,10 @@ public interface Queue<E> {
      * @return count of elements in the queue
      */
     int size();
+
+    /**
+     * The elements will be returned in order from first (head) to last (tail).
+     * @return an iterator over the elements in the queue in proper sequence
+     */
+    Iterator<E> iterator();
 }

@@ -197,6 +197,7 @@ public class LinkedList<E> extends AbstractList<E> {
 
     private class MyIterator implements Iterator<E> {
         private Node<E> node = head;
+        private Node<E> currentNode;
         private int cursor;
         private int lastReturned;
 
@@ -206,6 +207,7 @@ public class LinkedList<E> extends AbstractList<E> {
 
         public E next() {
             E value = node.value;
+            currentNode = node;
             node = node.next;
             lastReturned = cursor;
             cursor++;
@@ -213,8 +215,18 @@ public class LinkedList<E> extends AbstractList<E> {
         }
 
         public void remove() {
-            LinkedList.this.remove(lastReturned);
+            if(lastReturned == 0){
+                head = node;
+                node.prev = null;
+            }else if(lastReturned == size - 1){
+                tail = currentNode.prev;
+                currentNode.prev.next = null;
+            }else {
+                currentNode.prev.next = node;
+                node.prev = currentNode.prev;
+            }
             cursor = lastReturned;
+            size--;
         }
     }
 }
