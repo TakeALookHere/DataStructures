@@ -5,7 +5,6 @@ import java.util.StringJoiner;
 
 public class LinkedBlockingQueue<E> extends AbstractBlockingQueue<E>{
 
-    private int size;
     private int capacity;
     private Node<E> head;
     private Node<E> tail;
@@ -70,10 +69,6 @@ public class LinkedBlockingQueue<E> extends AbstractBlockingQueue<E>{
         }
     }
 
-    public int size() {
-        return size;
-    }
-
     public String toString(){
         StringJoiner joiner = new StringJoiner(", ", "[", "]");
         Node<E> temp = head;
@@ -112,13 +107,13 @@ public class LinkedBlockingQueue<E> extends AbstractBlockingQueue<E>{
         private Node<E> prev;
 
         public boolean hasNext() {
-            synchronized (MyIterator.class){
+            synchronized (LinkedBlockingQueue.class){
                 return cursor < size;
             }
         }
 
         public E next() {
-            synchronized (MyIterator.class){
+            synchronized (LinkedBlockingQueue.class){
                 E value = currentNode.value;
                 prev = lastReturned;
                 lastReturned = currentNode;
@@ -129,7 +124,7 @@ public class LinkedBlockingQueue<E> extends AbstractBlockingQueue<E>{
         }
 
         public void remove() {
-            synchronized (MyIterator.class){
+            synchronized (LinkedBlockingQueue.class){
                 if(lastReturned == head){
                     head = currentNode;
                     lastReturned.next = null;

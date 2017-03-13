@@ -2,6 +2,8 @@ package com.miskevich.datastructures.list;
 
 public abstract class AbstractList<E> implements List<E>{
 
+    int size;
+
     void validateElementIndex(int index, int size) {
         if (index < 0 || index > size) {
             String msg = "Incorrect element index -> " + index +
@@ -22,7 +24,11 @@ public abstract class AbstractList<E> implements List<E>{
     }
 
     public void add(E value) {
-        add(size(), value);
+        add(size, value);
+    }
+
+    public int size() {
+        return size;
     }
 
 }

@@ -5,7 +5,6 @@ import java.util.StringJoiner;
 
 public class ArrayBlockingQueue<E> extends AbstractBlockingQueue<E>{
 
-    private int size;
     private E[] items;
     private int takeIndex;
     private int putIndex;
@@ -74,10 +73,6 @@ public class ArrayBlockingQueue<E> extends AbstractBlockingQueue<E>{
         }
     }
 
-    public int size() {
-        return size;
-    }
-
     public Iterator<E> iterator() {
         return new MyIterator();
 
@@ -112,13 +107,13 @@ public class ArrayBlockingQueue<E> extends AbstractBlockingQueue<E>{
         private int lastReturned = putIndex;
 
         public boolean hasNext() {
-            synchronized (MyIterator.class) {
+            synchronized (ArrayBlockingQueue.class) {
                 return size != 0 && cursor < capacity;
             }
         }
 
         public E next() {
-            synchronized (MyIterator.class) {
+            synchronized (ArrayBlockingQueue.class) {
                 E value;
                 if(lastReturned != 0){
                     do{
@@ -141,7 +136,7 @@ public class ArrayBlockingQueue<E> extends AbstractBlockingQueue<E>{
         }
 
         public void remove() {
-            synchronized (MyIterator.class){
+            synchronized (ArrayBlockingQueue.class){
                 int current;
                 if(lastReturned != 0){
                     current = (lastReturned - 1);

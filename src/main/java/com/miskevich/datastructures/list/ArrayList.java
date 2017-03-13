@@ -6,16 +6,12 @@ import java.util.StringJoiner;
 public class ArrayList<E> extends AbstractList<E>{
 
     private E[] array;
-    private int size;
     private static final int INITIAL_CAPACITY = 5;
 
     @SuppressWarnings("unchecked")
     public ArrayList() {
+        //super(size);
         array = (E[])new Object[INITIAL_CAPACITY];
-    }
-
-    public int size() {
-        return size;
     }
 
     public void add(int index, E value) {

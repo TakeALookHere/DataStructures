@@ -5,13 +5,8 @@ import java.util.StringJoiner;
 
 public class LinkedList<E> extends AbstractList<E> {
 
-    private int size;
     private Node<E> head;
     private Node<E> tail;
-
-    public int size() {
-        return size;
-    }
 
     public void add(int index, E value) {
         validateElementIndex(index, size);
