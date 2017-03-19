@@ -1,6 +1,5 @@
 package com.miskevich.datastructures.list;
 
-import java.util.Iterator;
 
 public interface List<E> extends Iterable<E>{
 
@@ -14,5 +13,5 @@ public interface List<E> extends Iterable<E>{
     void clear();
     E get(int index);
     E remove(int index);
-    Iterator<E> iterator();
+
 }

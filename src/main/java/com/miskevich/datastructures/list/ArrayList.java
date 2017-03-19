@@ -105,21 +105,19 @@ public class ArrayList<E> extends AbstractList<E>{
 
     private class MyIterator implements Iterator<E>{
         private int cursor;
-        private int lastReturned;
 
         public boolean hasNext() {
             return cursor < size;
         }
 
         public E next() {
-            lastReturned = cursor;
             cursor++;
-            return array[lastReturned];
+            return array[cursor-1];
         }
 
         public void remove() {
-            ArrayList.this.remove(lastReturned);
-            cursor = lastReturned;
+            ArrayList.this.remove(cursor-1);
+            cursor = cursor-1;
         }
     }
 }

@@ -122,25 +122,29 @@ public class LinkedList<E> extends AbstractList<E> {
         return node(index).value;
     }
 
-    public E remove(int index) {
-        validatePositionIndex(index, size);
-        Node<E> currentNode = node(index);
-        if(index == size - 1){
-            Node<E> prev = currentNode.prev;
+    private E remove(Node<E> node){
+        if(node == tail){
+            Node<E> prev = node.prev;
             tail = prev;
             prev.next = null;
-        }else if(index == 0){
-            Node<E> next = currentNode.next;
+        }else if(node == head){
+            Node<E> next = node.next;
             head = next;
             next.prev = null;
         }else {
-            Node<E> prev = currentNode.prev;
-            Node<E> next = currentNode.next;
+            Node<E> prev = node.prev;
+            Node<E> next = node.next;
             prev.next = next;
             next.prev = prev;
         }
         size--;
-        return currentNode.value;
+        return node.value;
+    }
+
+    public E remove(int index) {
+        validatePositionIndex(index, size);
+        Node<E> currentNode = node(index);
+        return remove(currentNode);
     }
 
     public Iterator<E> iterator() {
@@ -191,37 +195,25 @@ public class LinkedList<E> extends AbstractList<E> {
     }
 
     private class MyIterator implements Iterator<E> {
-        private Node<E> node = head;
         private Node<E> currentNode;
-        private int cursor;
-        private int lastReturned;
 
         public boolean hasNext() {
-            return cursor < size;
+            return currentNode != tail;
         }
 
         public E next() {
-            E value = node.value;
-            currentNode = node;
-            node = node.next;
-            lastReturned = cursor;
-            cursor++;
-            return value;
+            if(currentNode == null){
+                currentNode = head;
+            }else {
+                currentNode = currentNode.next;
+            }
+            return currentNode.value;
         }
 
         public void remove() {
-            if(lastReturned == 0){
-                head = node;
-                node.prev = null;
-            }else if(lastReturned == size - 1){
-                tail = currentNode.prev;
-                currentNode.prev.next = null;
-            }else {
-                currentNode.prev.next = node;
-                node.prev = currentNode.prev;
-            }
-            cursor = lastReturned;
-            size--;
+            Node<E> newCurrentNode = currentNode == tail ? tail.prev : currentNode;
+            LinkedList.this.remove(currentNode);
+            currentNode = newCurrentNode;
         }
     }
 }

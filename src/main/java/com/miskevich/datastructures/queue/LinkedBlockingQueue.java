@@ -101,44 +101,40 @@ public class LinkedBlockingQueue<E> extends AbstractBlockingQueue<E>{
     }
 
     private class MyIterator implements Iterator<E>{
-        private Node<E> currentNode = head;
-        private int cursor;
-        private Node<E> lastReturned;
+        private Node<E> currentNode;
         private Node<E> prev;
 
         public boolean hasNext() {
-            synchronized (LinkedBlockingQueue.class){
-                return cursor < size;
+            synchronized (LinkedBlockingQueue.this){
+                return size != 0 && currentNode != tail;
             }
         }
 
         public E next() {
-            synchronized (LinkedBlockingQueue.class){
-                E value = currentNode.value;
-                prev = lastReturned;
-                lastReturned = currentNode;
-                currentNode = currentNode.next;
-                cursor++;
-                return value;
+            synchronized (LinkedBlockingQueue.this){
+                prev = currentNode;
+                if(currentNode == null){
+                    currentNode = head;
+                }else {
+                    currentNode = currentNode.next;
+                }
+                return currentNode.value;
             }
         }
 
         public void remove() {
-            synchronized (LinkedBlockingQueue.class){
-                if(lastReturned == head){
-                    head = currentNode;
-                    lastReturned.next = null;
-                    lastReturned.value = null;
-                }else if(lastReturned.next == null){
-                    prev.next = null;
+            synchronized (LinkedBlockingQueue.this){
+                if(currentNode == head){
+                    head = currentNode.next;
+                    currentNode = null;
+                }else if(currentNode == tail){
                     tail = prev;
-                    lastReturned.value = null;
+                    prev.next = null;
+                    currentNode = prev;
                 }else {
-                    prev.next = currentNode;
-                    lastReturned.next = null;
-                    lastReturned.value = null;
+                    prev.next = currentNode.next;
+                    currentNode.value = null;
                 }
-                cursor--;
                 size--;
             }
         }

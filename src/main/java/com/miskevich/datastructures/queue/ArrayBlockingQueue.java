@@ -80,25 +80,19 @@ public class ArrayBlockingQueue<E> extends AbstractBlockingQueue<E>{
 
     public String toString(){
         StringJoiner joiner = new StringJoiner(", ", "[", "]");
-        if(putIndex != 0){
-            for (int i = putIndex; i < capacity; i++) {
-                if (items[i] != null) {
-                    joiner.add(String.valueOf(items[i]));
-                }
+
+        for (int i = putIndex; i < capacity; i++) {
+            if (items[i] != null) {
+                joiner.add(String.valueOf(items[i]));
             }
+        }
+        if(putIndex != 0){
             for (int i = 0; i < putIndex; i++) {
                 if (items[i] != null) {
                     joiner.add(String.valueOf(items[i]));
                 }
             }
-        }else {
-            for (int i = putIndex; i < capacity; i++) {
-                if (items[i] != null) {
-                    joiner.add(String.valueOf(items[i]));
-                }
-            }
         }
-
         return joiner.toString();
     }
 
@@ -107,36 +101,28 @@ public class ArrayBlockingQueue<E> extends AbstractBlockingQueue<E>{
         private int lastReturned = putIndex;
 
         public boolean hasNext() {
-            synchronized (ArrayBlockingQueue.class) {
+            synchronized (ArrayBlockingQueue.this) {
                 return size != 0 && cursor < capacity;
             }
         }
 
         public E next() {
-            synchronized (ArrayBlockingQueue.class) {
+            synchronized (ArrayBlockingQueue.this) {
                 E value;
-                if(lastReturned != 0){
-                    do{
-                        value = items[lastReturned];
-                        lastReturned++;
-                        cursor++;
-                        if(lastReturned == capacity){
-                            lastReturned = 0;
-                        }
-                    }while (value == null);
-                }else {
-                    do{
-                        value = items[lastReturned];
-                        lastReturned++;
-                        cursor++;
-                    }while (value == null);
-                }
+                do{
+                    value = items[lastReturned];
+                    lastReturned++;
+                    cursor++;
+                    if(lastReturned != 0 && lastReturned == capacity){
+                        lastReturned = 0;
+                    }
+                }while (value == null);
                 return value;
             }
         }
 
         public void remove() {
-            synchronized (ArrayBlockingQueue.class){
+            synchronized (ArrayBlockingQueue.this){
                 int current;
                 if(lastReturned != 0){
                     current = (lastReturned - 1);
