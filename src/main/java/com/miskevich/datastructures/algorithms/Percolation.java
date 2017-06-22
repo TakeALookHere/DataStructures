@@ -1,6 +1,6 @@
 package com.miskevich.datastructures.algorithms;
 
-import edu.princeton.cs.algs4.WeightedQuickUnionUF;
+import edu.princeton.cs.algorithms.WeightedQuickUnionUF;
 
 import java.util.Arrays;
 
@@ -8,10 +8,11 @@ public class Percolation {
 
     private int range;
     private int[] grid;
-    private int size;
     private WeightedQuickUnionUF weightedQuickUnionUF;
-    //which sites are open,
-    // and which sites are connected to which other sites
+    private final int EMPTY_OPEN = 1;
+    private int openCount = 0;
+    private int topSiteIndex;
+    private int bottomSiteIndex;
 
     // create range-by-range grid, with all sites blocked
     public Percolation(int range) {
@@ -21,20 +22,18 @@ public class Percolation {
 
         this.range = range;
         this.grid = new int[(int) (Math.pow(range, 2))];
-        this.size = grid.length;
-        this.weightedQuickUnionUF = new WeightedQuickUnionUF(size);
+        this.weightedQuickUnionUF = new WeightedQuickUnionUF(grid.length + 2);
+        this.topSiteIndex = (int) Math.pow(range, 2);
+        this.bottomSiteIndex = (int) Math.pow(range, 2) + 1;
     }
 
     // open site (row, col) if it is not open already
     public void open(int row, int col) {
-        //First, it should validate the indices of the site that it receives
         validateIndices(row, col);
         if (!isOpen(row, col)) {
-            //Second, it should somehow mark the site as open
             int siteIndex = xyToID(row, col);
-            grid[siteIndex] = 1;
-
-            //Third, it should perform some sequence of WeightedQuickUnionUF operations that links the site in question to its open neighbors
+            grid[siteIndex] = EMPTY_OPEN;
+            openCount++;
             connectNeighbours(row, col, siteIndex);
         }
     }
@@ -64,37 +63,36 @@ public class Percolation {
             int right = xyToID(row, col + 1);
             connectIfOpen(row, col + 1, siteIndex, right);
         }
+        if (row == 1) {
+            weightedQuickUnionUF.union(topSiteIndex, siteIndex);
+        }
+        if (row == range) {
+            weightedQuickUnionUF.union(bottomSiteIndex, siteIndex);
+        }
     }
 
     // is site (row, col) open?
     public boolean isOpen(int row, int col) {
         validateIndices(row, col);
         int siteIndex = xyToID(row, col);
-        if (grid[siteIndex] == 1) {
-            return true;
-        }
-        return false;
+        return grid[siteIndex] == EMPTY_OPEN;
     }
 
     // is site (row, col) full?
     public boolean isFull(int row, int col) {
         validateIndices(row, col);
-
-        return false;
+        int siteIndex = xyToID(row, col);
+        return weightedQuickUnionUF.connected(topSiteIndex, siteIndex);
     }
 
     // number of open sites
     public int numberOfOpenSites() {
-        return 0;
+        return openCount;
     }
 
     // does the system percolate?
     public boolean percolates() {
-        return false;
-    }
-
-    public int size() {
-        return size;
+        return weightedQuickUnionUF.connected(topSiteIndex, bottomSiteIndex);
     }
 
     private int xyToID(int row, int col) {
@@ -110,10 +108,15 @@ public class Percolation {
     // test client (optional)
     public static void main(String[] args) {
         Percolation percolation = new Percolation(5);
-        percolation.open(1, 1);
-        percolation.open(1, 2);
+        percolation.open(1, 3);
+        percolation.open(2, 3);
+        percolation.open(3, 3);
+        percolation.open(4, 3);
+        //percolation.open(5, 3);
 
-        System.out.println(percolation.weightedQuickUnionUF.connected(0, 1));
+        System.out.println(percolation.weightedQuickUnionUF.connected(2, 7));
         System.out.println(Arrays.toString(percolation.grid));
+
+        System.out.println(percolation.percolates());
     }
 }
