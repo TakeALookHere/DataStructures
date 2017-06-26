@@ -1,4 +1,4 @@
-package com.miskevich.datastructures.algorithms;
+package com.miskevich.datastructures.algorithms.lecture1;
 
 import edu.princeton.cs.algorithms.WeightedQuickUnionUF;
 
