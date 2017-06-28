@@ -1,6 +1,6 @@
 package com.miskevich.datastructures.algorithms.lecture3;
 
-import edu.princeton.cs.introcs.StdRandom;
+import edu.princeton.cs.algs4.StdRandom;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -8,11 +8,10 @@ import java.util.StringJoiner;
 
 public class RandomizedQueue<Item> implements Iterable<Item> {
 
-    private final int INITIAL_CAPACITY = 5;
+    private static final int INITIAL_CAPACITY = 5;
     private Item[] items;
     private int size;
 
-    @SuppressWarnings("unchecked")
     public RandomizedQueue() {
         items = (Item[]) new Object[INITIAL_CAPACITY];
     }
@@ -36,8 +35,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     private void ensureCapacity() {
         if (size == items.length) {
-            @SuppressWarnings("unchecked")
-            Item[] newBiggerItems = (Item[]) new Object[(int) Math.round(items.length * 1.5)];
+            Item[] newBiggerItems = (Item[]) new Object[items.length * 2];
             System.arraycopy(items, 0, newBiggerItems, 0, items.length);
             items = newBiggerItems;
         }
@@ -51,12 +49,16 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     public Item dequeue() {
         emptyQueueCheck();
-        Item removedItem;
-        do {
-            int randomIndexToRemove = StdRandom.uniform(items.length);
-            removedItem = items[randomIndexToRemove];
+
+        int randomIndexToRemove = StdRandom.uniform(size);
+        Item removedItem = items[randomIndexToRemove];
+
+        if (randomIndexToRemove == size - 1) {
             items[randomIndexToRemove] = null;
-        } while (removedItem == null);
+        } else {
+            items[randomIndexToRemove] = items[size - 1];
+            items[size - 1] = null;
+        }
 
         size--;
         shrinkCapacity();
@@ -65,9 +67,8 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     private void shrinkCapacity() {
         if (size > INITIAL_CAPACITY && size == items.length / 4) {
-            @SuppressWarnings("unchecked")
-            Item[] newSmallerItems = (Item[]) new Object[Math.round(items.length / 2)];
-            System.arraycopy(items, 0, newSmallerItems, 0, items.length);
+            Item[] newSmallerItems = (Item[]) new Object[items.length / 2];
+            System.arraycopy(items, 0, newSmallerItems, 0, size);
             items = newSmallerItems;
         }
     }

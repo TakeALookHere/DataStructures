@@ -1,7 +1,12 @@
-# Created by .ignore support plugin (hsz.mobi)
-### Java template
-*.class
 /.idea
 *.iml
-
+algs4.jar
+src/main/java/com/miskevich/datastructures/algorithms/lecture1/PercolationVisualizer.java
+src/main/java/com/miskevich/datastructures/algorithms/lecture1/InteractivePercolationVisualizer.java
+src/main/java/com/miskevich/datastructures/Consumer.java
+src/main/java/com/miskevich/datastructures/Producer.java
+src/main/java/com/miskevich/datastructures/Solution.java
+src/main/java/com/miskevich/datastructures/SortedArrayToBST.java
+src/main/java/com/miskevich/datastructures/Test.java
+target/
 

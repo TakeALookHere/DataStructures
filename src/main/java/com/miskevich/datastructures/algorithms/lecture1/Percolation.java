@@ -1,18 +1,17 @@
 package com.miskevich.datastructures.algorithms.lecture1;
 
-import edu.princeton.cs.algorithms.WeightedQuickUnionUF;
-
-import java.util.Arrays;
+import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 public class Percolation {
 
     private int range;
     private int[] grid;
     private WeightedQuickUnionUF weightedQuickUnionUF;
-    private final int EMPTY_OPEN = 1;
+    private static final int EMPTY_OPEN = 1;
     private int openCount = 0;
     private int topSiteIndex;
     private int bottomSiteIndex;
+    // and which sites are connected to which other sites
 
     // create range-by-range grid, with all sites blocked
     public Percolation(int range) {
@@ -29,11 +28,15 @@ public class Percolation {
 
     // open site (row, col) if it is not open already
     public void open(int row, int col) {
+        //First, it should validate the indices of the site that it receives
         validateIndices(row, col);
         if (!isOpen(row, col)) {
+            //Second, it should somehow mark the site as open
             int siteIndex = xyToID(row, col);
             grid[siteIndex] = EMPTY_OPEN;
             openCount++;
+
+            //Third, it should perform some sequence of WeightedQuickUnionUF operations that links the site in question to its open neighbors
             connectNeighbours(row, col, siteIndex);
         }
     }
@@ -101,7 +104,7 @@ public class Percolation {
 
     private void validateIndices(int row, int col) {
         if (row < 1 || row > range || col < 1 || col > range) {
-            throw new IndexOutOfBoundsException("Indices must be in a range " + range);
+            throw new IllegalArgumentException("Indices must be in a range " + range);
         }
     }
 
@@ -112,11 +115,8 @@ public class Percolation {
         percolation.open(2, 3);
         percolation.open(3, 3);
         percolation.open(4, 3);
-        //percolation.open(5, 3);
 
         System.out.println(percolation.weightedQuickUnionUF.connected(2, 7));
-        System.out.println(Arrays.toString(percolation.grid));
-
         System.out.println(percolation.percolates());
     }
 }

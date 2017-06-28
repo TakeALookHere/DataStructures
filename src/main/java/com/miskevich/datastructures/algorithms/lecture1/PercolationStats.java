@@ -1,13 +1,13 @@
 package com.miskevich.datastructures.algorithms.lecture1;
 
-import edu.princeton.cs.introcs.StdRandom;
-import edu.princeton.cs.introcs.StdStats;
+import edu.princeton.cs.algs4.StdRandom;
+import edu.princeton.cs.algs4.StdStats;
 
 
 public class PercolationStats {
 
     private double[] percolationThresholdMean;
-    private final double CONST = 1.96;
+    private static final double CONST = 1.96;
     private final int trails;
 
     // perform trials independent experiments on an n-by-n grid
