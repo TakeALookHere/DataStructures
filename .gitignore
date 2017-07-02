@@ -8,5 +8,6 @@ src/main/java/com/miskevich/datastructures/Producer.java
 src/main/java/com/miskevich/datastructures/Solution.java
 src/main/java/com/miskevich/datastructures/SortedArrayToBST.java
 src/main/java/com/miskevich/datastructures/Test.java
+src/main/java/Solution.java
 target/
 
