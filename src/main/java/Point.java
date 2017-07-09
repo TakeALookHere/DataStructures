@@ -12,6 +12,7 @@ import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdDraw;
 import edu.princeton.cs.algs4.StdOut;
 
+import java.util.Arrays;
 import java.util.Comparator;
 
 public class Point implements Comparable<Point> {
@@ -70,7 +71,7 @@ public class Point implements Comparable<Point> {
         } else if (that.x - x == 0) {
             return Double.POSITIVE_INFINITY;
         }
-        return (that.y - y) / (that.x - x);
+        return (double) (that.y - y) / (that.x - x);
     }
 
     /**
@@ -101,16 +102,14 @@ public class Point implements Comparable<Point> {
      * @return the Comparator that defines this ordering on points
      */
     public Comparator<Point> slopeOrder() {
-        return new Comparator<Point>() {
-            public int compare(Point point1, Point point2) {
-                double slopeDiff = slopeTo(point1) - slopeTo(point2);
-                if(slopeDiff > 0){
-                    return 1;
-                }else if(slopeDiff < 0){
-                    return -1;
-                }
-                return 0;
+        return (Point point1, Point point2) -> {
+            double slopeDiff = slopeTo(point1) - slopeTo(point2);
+            if(slopeDiff > 0){
+                return 1;
+            }else if(slopeDiff < 0){
+                return -1;
             }
+            return 0;
         };
     }
 
@@ -131,6 +130,14 @@ public class Point implements Comparable<Point> {
      * Unit tests the Point data type.
      */
     public static void main(String[] args) {
+//        Point p = new Point(194, 226);
+//        Point q = new Point(275, 236);
+//        Point r = new Point(129, 224);
+//        System.out.println(p.slopeOrder().compare(q, r));
+//        System.out.println(p.slopeTo(q));
+//        System.out.println(p.slopeTo(r));
+
+
         // read the n points from a file
         In in = new In(args[0]);
         int n = in.readInt();
@@ -157,5 +164,6 @@ public class Point implements Comparable<Point> {
             segment.draw();
         }
         StdDraw.show();
+        System.out.println(Arrays.toString(collinear.segments()));
     }
 }

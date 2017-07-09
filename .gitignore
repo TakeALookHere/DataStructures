@@ -10,4 +10,5 @@ src/main/java/com/miskevich/datastructures/SortedArrayToBST.java
 src/main/java/com/miskevich/datastructures/Test.java
 src/main/java/Solution.java
 target/
-
+src/main/java/collinear.zip
+/src/main/java/FastCollinearPoints2.java
