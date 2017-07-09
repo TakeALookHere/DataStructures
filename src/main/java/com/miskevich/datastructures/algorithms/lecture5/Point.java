@@ -1,6 +1,6 @@
-/******************************************************************************
- *  Compilation:  javac Point.java
- *  Execution:    java Point
+package com.miskevich.datastructures.algorithms.lecture5; /******************************************************************************
+ *  Compilation:  javac com.miskevich.datastructures.algorithms.lecture5.Point.java
+ *  Execution:    java com.miskevich.datastructures.algorithms.lecture5.Point
  *  Dependencies: none
  *
  *  An immutable data type for points in the plane.
@@ -127,12 +127,12 @@ public class Point implements Comparable<Point> {
     }
 
     /**
-     * Unit tests the Point data type.
+     * Unit tests the com.miskevich.datastructures.algorithms.lecture5.Point data type.
      */
     public static void main(String[] args) {
-//        Point p = new Point(194, 226);
-//        Point q = new Point(275, 236);
-//        Point r = new Point(129, 224);
+//        com.miskevich.datastructures.algorithms.lecture5.Point p = new com.miskevich.datastructures.algorithms.lecture5.Point(194, 226);
+//        com.miskevich.datastructures.algorithms.lecture5.Point q = new com.miskevich.datastructures.algorithms.lecture5.Point(275, 236);
+//        com.miskevich.datastructures.algorithms.lecture5.Point r = new com.miskevich.datastructures.algorithms.lecture5.Point(129, 224);
 //        System.out.println(p.slopeOrder().compare(q, r));
 //        System.out.println(p.slopeTo(q));
 //        System.out.println(p.slopeTo(r));

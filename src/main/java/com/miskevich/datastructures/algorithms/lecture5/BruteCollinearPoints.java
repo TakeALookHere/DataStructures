@@ -1,3 +1,5 @@
+package com.miskevich.datastructures.algorithms.lecture5;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -32,9 +34,9 @@ public class BruteCollinearPoints {
                     for (int s = r + 1; s < clone.length; s++) {
                         //System.out.println("point s: " + clone[s]);
                         if (slopeToPQ == clone[p].slopeTo(clone[s])) {
-//                            System.out.println("p->q: " + new LineSegment(clone[p], clone[q]));
-//                            System.out.println("q->r: " + new LineSegment(clone[q], clone[r]));
-//                            System.out.println("Line segment p->s: " + new LineSegment(clone[p], clone[s]));
+//                            System.out.println("p->q: " + new com.miskevich.datastructures.algorithms.lecture5.LineSegment(clone[p], clone[q]));
+//                            System.out.println("q->r: " + new com.miskevich.datastructures.algorithms.lecture5.LineSegment(clone[q], clone[r]));
+//                            System.out.println("Line segment p->s: " + new com.miskevich.datastructures.algorithms.lecture5.LineSegment(clone[p], clone[s]));
                             lineSegments.add(new LineSegment(clone[p], clone[s]));
 
                         }
@@ -52,11 +54,11 @@ public class BruteCollinearPoints {
         }
         for (int i = 0; i < points.length; i++) {
             if (null == points[i]) {
-                throw new IllegalArgumentException("Point is NULL");
+                throw new IllegalArgumentException("com.miskevich.datastructures.algorithms.lecture5.Point is NULL");
             }
             for (int j = i + 1; j < points.length; j++) {
                 if (null == points[j]) {
-                    throw new IllegalArgumentException("Point is NULL");
+                    throw new IllegalArgumentException("com.miskevich.datastructures.algorithms.lecture5.Point is NULL");
                 }
                 if (points[i].compareTo(points[j]) == 0) {
                     throw new IllegalArgumentException("Duplicates in the given points");

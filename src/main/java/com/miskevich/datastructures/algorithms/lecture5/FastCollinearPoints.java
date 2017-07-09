@@ -1,15 +1,11 @@
+package com.miskevich.datastructures.algorithms.lecture5;
+
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdDraw;
 import edu.princeton.cs.algs4.StdOut;
 
 import java.util.*;
 
-
-/**
- * A fst solution of finding colinear points in a set of points.
- *
- * @author ISchwarz
- */
 public class FastCollinearPoints {
 
     private HashMap<Double, List<Point>> foundSegments = new HashMap<>();
@@ -79,11 +75,11 @@ public class FastCollinearPoints {
         }
         for (int i = 0; i < points.length; i++) {
             if (null == points[i]) {
-                throw new IllegalArgumentException("Point is NULL");
+                throw new IllegalArgumentException("com.miskevich.datastructures.algorithms.lecture5.Point is NULL");
             }
             for (int j = i + 1; j < points.length; j++) {
                 if (null == points[j]) {
-                    throw new IllegalArgumentException("Point is NULL");
+                    throw new IllegalArgumentException("com.miskevich.datastructures.algorithms.lecture5.Point is NULL");
                 }
                 if (points[i].compareTo(points[j]) == 0) {
                     throw new IllegalArgumentException("Duplicates in the given points");
