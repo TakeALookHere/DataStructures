@@ -2,11 +2,12 @@ package com.miskevich.datastructures.map;
 
 import com.miskevich.datastructures.list.ArrayList;
 import com.miskevich.datastructures.list.List;
+
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.StringJoiner;
 
-public class HashMap<K, V> implements Iterable<HashMap.Entry<K, V>>{
+public class HashMap<K, V> implements Iterable<HashMap.Entry<K, V>> {
 
     private int size;
     private final int INITIAL_CAPACITY = 5;
@@ -20,18 +21,18 @@ public class HashMap<K, V> implements Iterable<HashMap.Entry<K, V>>{
         }
     }
 
-    public int size(){
+    public int size() {
         return size;
     }
 
-    public V put(K key, V value){
+    public V put(K key, V value) {
         extendCapacityCheck();
         Entry<K, V> entry = new Entry<>(key, value);
         int index = getIndex(key);
         List<Entry<K, V>> bucket = entries[index];
 
         for (Entry<K, V> temp : bucket) {
-            if(temp.key.equals(key)){
+            if (temp.key.equals(key)) {
                 V oldValue = temp.value;
                 temp.value = value;
                 return oldValue;
@@ -44,23 +45,23 @@ public class HashMap<K, V> implements Iterable<HashMap.Entry<K, V>>{
         return entry.value;
     }
 
-    public boolean containsKey(K key){
+    public boolean containsKey(K key) {
         int index = getIndex(key);
         List<Entry<K, V>> bucket = entries[index];
         for (Entry<K, V> entry : bucket) {
-            if(entry.key.equals(key)) {
+            if (entry.key.equals(key)) {
                 return true;
             }
         }
         return false;
     }
 
-    public boolean containsValue(V value){
+    public boolean containsValue(V value) {
         for (int i = 0; i < entries.length; i++) {
-            if(entries[i].size() != 0){
+            if (entries[i].size() != 0) {
                 List<Entry<K, V>> bucket = entries[i];
                 for (Entry entry : bucket) {
-                    if(entry.value.equals(value)){
+                    if (entry.value.equals(value)) {
                         return true;
                     }
                 }
@@ -69,11 +70,11 @@ public class HashMap<K, V> implements Iterable<HashMap.Entry<K, V>>{
         return false;
     }
 
-    public V get(K key){
+    public V get(K key) {
         int index = getIndex(key);
         List<Entry<K, V>> bucket = entries[index];
         for (Entry<K, V> entry : bucket) {
-            if(entry.key.equals(key)){
+            if (entry.key.equals(key)) {
                 return entry.value;
             }
         }
@@ -81,16 +82,16 @@ public class HashMap<K, V> implements Iterable<HashMap.Entry<K, V>>{
         throw new NoSuchElementException(msg);
     }
 
-    public boolean isEmpty(){
+    public boolean isEmpty() {
         return size == 0;
     }
 
-    public V remove(K key){
+    public V remove(K key) {
         int index = getIndex(key);
         List<Entry<K, V>> bucket = entries[index];
-        for (Iterator<Entry<K, V>> iterator = bucket.iterator(); iterator.hasNext();){
+        for (Iterator<Entry<K, V>> iterator = bucket.iterator(); iterator.hasNext(); ) {
             Entry<K, V> entry = iterator.next();
-            if(entry.key.equals(key)){
+            if (entry.key.equals(key)) {
                 iterator.remove();
                 size--;
                 return entry.value;
@@ -99,9 +100,9 @@ public class HashMap<K, V> implements Iterable<HashMap.Entry<K, V>>{
         throw new NoSuchElementException("No element were found with key = " + key);
     }
 
-    public void clear(){
+    public void clear() {
         for (int i = 0; i < entries.length; i++) {
-            if(entries[i].size() != 0){
+            if (entries[i].size() != 0) {
                 entries[i] = new ArrayList<>();
             }
         }
@@ -112,12 +113,12 @@ public class HashMap<K, V> implements Iterable<HashMap.Entry<K, V>>{
         return Math.abs(key.hashCode() % entries.length);
     }
 
-    private void extendCapacityCheck(){
+    private void extendCapacityCheck() {
         int oldCapacity = entries.length;
-        if(size > oldCapacity * LOAD_FACTOR){
+        if (size > oldCapacity * LOAD_FACTOR) {
             int newCapacity = oldCapacity * 2;
             @SuppressWarnings("unchecked")
-            List<Entry<K, V>> [] newBiggerEntries = new ArrayList[newCapacity];
+            List<Entry<K, V>>[] newBiggerEntries = new ArrayList[newCapacity];
             for (int i = 0; i < newBiggerEntries.length; i++) {
                 newBiggerEntries[i] = new ArrayList<>();
             }
@@ -134,7 +135,7 @@ public class HashMap<K, V> implements Iterable<HashMap.Entry<K, V>>{
         }
     }
 
-    public String toString(){
+    public String toString() {
         StringJoiner joiner = new StringJoiner(", ", "[", "]");
         for (List<Entry<K, V>> entry : entries) {
             if (entry.size() != 0) {
@@ -148,11 +149,11 @@ public class HashMap<K, V> implements Iterable<HashMap.Entry<K, V>>{
         return new MyIterator();
     }
 
-    public static class Entry<K, V>{
+    public static class Entry<K, V> {
         K key;
         V value;
 
-        private Entry(K key, V value){
+        private Entry(K key, V value) {
             this.key = key;
             this.value = value;
         }
@@ -188,19 +189,19 @@ public class HashMap<K, V> implements Iterable<HashMap.Entry<K, V>>{
 
         public Entry<K, V> next() {
             int listSize;
-            do{
+            do {
                 lastReturnedEntries = entriesCursor;
                 lastReturnedList = listCursor;
                 listSize = entries[lastReturnedEntries].size();
-                if(listSize == 0){
+                if (listSize == 0) {
                     entriesCursor++;
                 }
-            }while (listSize == 0);
+            } while (listSize == 0);
 
             currentEntry = entries[lastReturnedEntries].get(lastReturnedList);
             cursor++;
             listCursor++;
-            if(listCursor == listSize){
+            if (listCursor == listSize) {
                 entriesCursor++;
                 listCursor = 0;
             }

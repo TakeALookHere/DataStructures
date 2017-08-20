@@ -4,7 +4,7 @@ public abstract class AbstractList<E> implements List<E>{
 
     int size;
 
-    void validateElementIndex(int index, int size) {
+    void validateElementIndex(int index) {
         if (index < 0 || index > size) {
             String msg = "Incorrect element index -> " + index +
                     ", index should be between 0 and " + size + " inclusive";
@@ -12,7 +12,7 @@ public abstract class AbstractList<E> implements List<E>{
         }
     }
 
-    void validatePositionIndex(int index, int size) {
+    void validatePositionIndex(int index) {
         if(index == 0 && size == 0){
             String msg = "Current operation is prohibited for empty list: index = 0, size = 0";
             throw new IndexOutOfBoundsException(msg);

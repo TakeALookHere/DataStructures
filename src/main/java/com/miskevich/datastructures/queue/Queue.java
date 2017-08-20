@@ -32,5 +32,4 @@ public interface Queue<E> extends Iterable<E>{
      * The elements will be returned in order from first (head) to last (tail).
      * @return an iterator over the elements in the queue in proper sequence
      */
-    Iterator<E> iterator();
 }

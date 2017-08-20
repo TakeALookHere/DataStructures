@@ -9,19 +9,19 @@ public class LinkedList<E> extends AbstractList<E> {
     private Node<E> tail;
 
     public void add(int index, E value) {
-        validateElementIndex(index, size);
+        validateElementIndex(index);
         Node<E> node = new Node<>(value);
-        if(size == 0){
+        if (size == 0) {
             head = tail = node;
-        }else if(index == size){
+        } else if (index == size) {
             tail.next = node;
             node.prev = tail;
             tail = node;
-        }else if(index == 0){
+        } else if (index == 0) {
             Node<E> currentNode = node(index);
             head = node;
             node.next = currentNode;
-        }else {
+        } else {
             Node<E> currentNode = node(index);
             Node<E> prev = currentNode.prev;
             node.prev = prev;
@@ -34,16 +34,16 @@ public class LinkedList<E> extends AbstractList<E> {
 
     public int indexOf(E value) {
         Node<E> currentNode = head;
-        if(value == null){
+        if (value == null) {
             for (int i = 0; i < size; i++) {
-                if(currentNode.value == null){
+                if (currentNode.value == null) {
                     return i;
                 }
                 currentNode = currentNode.next;
             }
-        }else {
+        } else {
             for (int i = 0; i < size; i++) {
-                if(value.equals(currentNode.value)){
+                if (value.equals(currentNode.value)) {
                     return i;
                 }
                 currentNode = currentNode.next;
@@ -54,16 +54,16 @@ public class LinkedList<E> extends AbstractList<E> {
 
     public int lastIndexOf(E value) {
         Node<E> currentNode = tail;
-        if(value == null){
-            for (int i = size-1; i >=0 ; i--) {
-                if(currentNode.value == null){
+        if (value == null) {
+            for (int i = size - 1; i >= 0; i--) {
+                if (currentNode.value == null) {
                     return i;
                 }
                 currentNode = currentNode.prev;
             }
-        }else {
-            for (int i = size-1; i >=0 ; i--) {
-                if(value.equals(currentNode.value)){
+        } else {
+            for (int i = size - 1; i >= 0; i--) {
+                if (value.equals(currentNode.value)) {
                     return i;
                 }
                 currentNode = currentNode.prev;
@@ -77,22 +77,22 @@ public class LinkedList<E> extends AbstractList<E> {
     }
 
     public E set(int index, E value) {
-        validatePositionIndex(index, size);
+        validatePositionIndex(index);
         Node<E> currentNode;
         Node<E> node = new Node<>(value);
-        if(index == size-1){
+        if (index == size - 1) {
             currentNode = tail;
             tail = node;
             Node<E> prev = currentNode.prev;
             node.prev = prev;
             prev.next = node;
-        }else if(index == 0){
+        } else if (index == 0) {
             currentNode = node(index);
             Node<E> next = currentNode.next;
             head = node;
             node.next = next;
             next.prev = node;
-        }else {
+        } else {
             currentNode = node(index);
             Node<E> next = currentNode.next;
             Node<E> prev = currentNode.prev;
@@ -118,20 +118,20 @@ public class LinkedList<E> extends AbstractList<E> {
     }
 
     public E get(int index) {
-        validatePositionIndex(index, size);
+        validatePositionIndex(index);
         return node(index).value;
     }
 
-    private E remove(Node<E> node){
-        if(node == tail){
+    private E remove(Node<E> node) {
+        if (node == tail) {
             Node<E> prev = node.prev;
             tail = prev;
             prev.next = null;
-        }else if(node == head){
+        } else if (node == head) {
             Node<E> next = node.next;
             head = next;
             next.prev = null;
-        }else {
+        } else {
             Node<E> prev = node.prev;
             Node<E> next = node.next;
             prev.next = next;
@@ -142,7 +142,7 @@ public class LinkedList<E> extends AbstractList<E> {
     }
 
     public E remove(int index) {
-        validatePositionIndex(index, size);
+        validatePositionIndex(index);
         Node<E> currentNode = node(index);
         return remove(currentNode);
     }
@@ -151,12 +151,12 @@ public class LinkedList<E> extends AbstractList<E> {
         return new MyIterator();
     }
 
-    private static class Node<E>{
+    private static class Node<E> {
         E value;
         Node<E> next;
         Node<E> prev;
 
-        private Node(E value){
+        private Node(E value) {
             this.value = value;
         }
 
@@ -167,7 +167,7 @@ public class LinkedList<E> extends AbstractList<E> {
         }
     }
 
-    public String toString(){
+    public String toString() {
         StringJoiner joiner = new StringJoiner(", ", "[", "]");
         Node<E> temp = head;
         for (int i = 0; i < size; i++) {
@@ -178,19 +178,19 @@ public class LinkedList<E> extends AbstractList<E> {
         return joiner.toString();
     }
 
-    private Node<E> node(int index){
-        if(index < size / 2){
+    private Node<E> node(int index) {
+        if (index < size / 2) {
             Node<E> currentNode = head;
             for (int i = 0; i < index; i++) {
                 currentNode = currentNode.next;
             }
-                return currentNode;
-        }else {
+            return currentNode;
+        } else {
             Node<E> currentNode = tail;
             for (int i = size - 1; i > index; i--) {
                 currentNode = currentNode.prev;
             }
-                return currentNode;
+            return currentNode;
         }
     }
 
@@ -202,9 +202,9 @@ public class LinkedList<E> extends AbstractList<E> {
         }
 
         public E next() {
-            if(currentNode == null){
+            if (currentNode == null) {
                 currentNode = head;
-            }else {
+            } else {
                 currentNode = currentNode.next;
             }
             return currentNode.value;

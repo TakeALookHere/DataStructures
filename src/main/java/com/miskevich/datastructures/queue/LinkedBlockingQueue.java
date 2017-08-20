@@ -3,7 +3,7 @@ package com.miskevich.datastructures.queue;
 import java.util.Iterator;
 import java.util.StringJoiner;
 
-public class LinkedBlockingQueue<E> extends AbstractBlockingQueue<E>{
+public class LinkedBlockingQueue<E> extends AbstractBlockingQueue<E> {
 
     private int capacity;
     private Node<E> head;
@@ -20,7 +20,7 @@ public class LinkedBlockingQueue<E> extends AbstractBlockingQueue<E>{
     }
 
     public synchronized E peek() {
-        while (size == 0){
+        while (size == 0) {
             try {
                 wait();
             } catch (InterruptedException e) {
@@ -32,7 +32,7 @@ public class LinkedBlockingQueue<E> extends AbstractBlockingQueue<E>{
     }
 
     public synchronized E poll() {
-        while (size == 0){
+        while (size == 0) {
             try {
                 wait();
             } catch (InterruptedException e) {
@@ -49,8 +49,8 @@ public class LinkedBlockingQueue<E> extends AbstractBlockingQueue<E>{
 
     public void push(E value) {
         checkNotNull(value);
-        synchronized (this){
-            while (size == capacity){
+        synchronized (this) {
+            while (size == capacity) {
                 try {
                     wait();
                 } catch (InterruptedException e) {
@@ -58,9 +58,9 @@ public class LinkedBlockingQueue<E> extends AbstractBlockingQueue<E>{
                 }
             }
             Node<E> node = new Node<>(value);
-            if(size == 0){
+            if (size == 0) {
                 head = tail = node;
-            }else {
+            } else {
                 tail.next = node;
                 tail = node;
             }
@@ -69,10 +69,10 @@ public class LinkedBlockingQueue<E> extends AbstractBlockingQueue<E>{
         }
     }
 
-    public String toString(){
+    public String toString() {
         StringJoiner joiner = new StringJoiner(", ", "[", "]");
         Node<E> temp = head;
-        while (temp != null){
+        while (temp != null) {
             joiner.add(String.valueOf(temp.value));
             temp = temp.next;
         }
@@ -84,11 +84,11 @@ public class LinkedBlockingQueue<E> extends AbstractBlockingQueue<E>{
         return new MyIterator();
     }
 
-    private static class Node<E>{
+    private static class Node<E> {
         E value;
         Node<E> next;
 
-        private Node(E value){
+        private Node(E value) {
             this.value = value;
         }
 
@@ -100,22 +100,22 @@ public class LinkedBlockingQueue<E> extends AbstractBlockingQueue<E>{
         }
     }
 
-    private class MyIterator implements Iterator<E>{
+    private class MyIterator implements Iterator<E> {
         private Node<E> currentNode;
         private Node<E> prev;
 
         public boolean hasNext() {
-            synchronized (LinkedBlockingQueue.this){
+            synchronized (LinkedBlockingQueue.this) {
                 return size != 0 && currentNode != tail;
             }
         }
 
         public E next() {
-            synchronized (LinkedBlockingQueue.this){
+            synchronized (LinkedBlockingQueue.this) {
                 prev = currentNode;
-                if(currentNode == null){
+                if (currentNode == null) {
                     currentNode = head;
-                }else {
+                } else {
                     currentNode = currentNode.next;
                 }
                 return currentNode.value;
@@ -123,15 +123,15 @@ public class LinkedBlockingQueue<E> extends AbstractBlockingQueue<E>{
         }
 
         public void remove() {
-            synchronized (LinkedBlockingQueue.this){
-                if(currentNode == head){
+            synchronized (LinkedBlockingQueue.this) {
+                if (currentNode == head) {
                     head = currentNode.next;
                     currentNode = null;
-                }else if(currentNode == tail){
+                } else if (currentNode == tail) {
                     tail = prev;
                     prev.next = null;
                     currentNode = prev;
-                }else {
+                } else {
                     prev.next = currentNode.next;
                     currentNode.value = null;
                 }
